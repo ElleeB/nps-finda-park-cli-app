@@ -37,11 +37,16 @@ class FindaPark::Scraper
       park_hash[:catch_phrase] = doc.css("h1.page-title").text
       park_hash[:contact] = doc.css("div.vcard") # will need to scrape for specifics in Park class | street: span.street-address | city: span attribute = "addressLocality" | state: span.region | zip: span.postal-code | phone: span.tel
       park_hash[:info_url] = "https://www.nps.gov/state#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
-      puts park_hash
+      park_hash
     end
 
-    def info_scraper(info_url)
+    def self.info_scraper(info_url) #https://www.nps.gov/tapr/planyourvisit/basicinfo.htm
       #obtain seasons and hours
+      doc = Nokogiri::HTML(open(info_url))
+      info_hash = {:season_info => nil, :hours => nil}
+      info_hash[:season_info] = doc.css("div.operating-hours p").text
+      info_hash[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text
+      info_hash
     end
 
 end
