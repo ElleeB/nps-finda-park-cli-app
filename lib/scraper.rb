@@ -1,10 +1,10 @@
 class FindaPark::Scraper
 
+  # returns an array of all state
   def self.index_scraper(index_url)
     @states_array = []
     doc = Nokogiri::HTML(open(index_url))
     states = doc.css("select#state").search("option")
-    # => <option value="or">Oregon</option>
     states.each do |s|
       state_hash = {:name => nil, :url => nil}
       state_hash[:name] = s.text
@@ -15,6 +15,7 @@ class FindaPark::Scraper
     @states_array
   end
 
+  # returns and array of state's parks
   def self.state_parks_scraper(state_url)
     @parks_array = []
     doc = Nokogiri::HTML(open(state_url))
@@ -31,22 +32,23 @@ class FindaPark::Scraper
     puts @parks_array
   end
 
-    def self.park_scraper(park_url)
-      park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
-      doc = Nokogiri::HTML(open(park_url))
-      park_hash[:catch_phrase] = doc.css("h1.page-title").text
-      park_hash[:contact] = doc.css("div.vcard") # will need to scrape for specifics in Park class | street: span.street-address | city: span attribute = "addressLocality" | state: span.region | zip: span.postal-code | phone: span.tel
-      park_hash[:info_url] = "https://www.nps.gov/state#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
-      park_hash
-    end
+  # returns a hash of park's catch phrase, contact info, and url
+  def self.park_scraper(park_url)
+    park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
+    doc = Nokogiri::HTML(open(park_url))
+    park_hash[:catch_phrase] = doc.css("h1.page-title").text
+    park_hash[:contact] = doc.css("div.vcard") # will need to scrape for specifics in Park class | street: span.street-address | city: span attribute = "addressLocality" | state: span.region | zip: span.postal-code | phone: span.tel
+    park_hash[:info_url] = "https://www.nps.gov/state#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
+    park_hash
+  end
 
-    def self.info_scraper(info_url) #https://www.nps.gov/tapr/planyourvisit/basicinfo.htm
-      #obtain seasons and hours
-      doc = Nokogiri::HTML(open(info_url))
-      info_hash = {:season_info => nil, :hours => nil}
-      info_hash[:season_info] = doc.css("div.operating-hours p").text
-      info_hash[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text
-      info_hash
-    end
+  # returns a hash of park's seasonal info and hours
+  def self.info_scraper(info_url)
+    doc = Nokogiri::HTML(open(info_url))
+    info_hash = {:season_info => nil, :hours => nil}
+    info_hash[:season_info] = doc.css("div.operating-hours p").text
+    info_hash[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text
+    info_hash
+  end
 
 end
