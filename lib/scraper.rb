@@ -31,8 +31,13 @@ class FindaPark::Scraper
     puts @parks_array
   end
 
-    def park_scraper(park_url)
-      park_hash = {:catch_phrase => nil, :address => nil, :phone => nil, :info_url => nil}
+    def self.park_scraper(park_url)
+      park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
+      doc = Nokogiri::HTML(open(park_url))
+      park_hash[:catch_phrase] = doc.css("h1.page-title").text
+      park_hash[:contact] = doc.css("div.vcard") # will need to scrape for specifics in Park class | street: span.street-address | city: span attribute = "addressLocality" | state: span.region | zip: span.postal-code | phone: span.tel
+      park_hash[:info_url] = "https://www.nps.gov/state#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
+      puts park_hash
     end
 
     def info_scraper(info_url)
