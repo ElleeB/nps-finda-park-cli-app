@@ -3,7 +3,6 @@ class FindaPark::State
 
   @@all_states = []
 
-
   def initialize(state_hash)
     @name = state_hash[:name]
     @url = state_hash[:url]
@@ -19,9 +18,15 @@ class FindaPark::State
   end
 
   # # use collection of state's parks to instantiate parks # add to @parks
-  # def add_parks
-  #
-  # end
+  def add_parks
+    FindaPark::Park.all.each do |park|
+      if park.state == self.name
+        @parks << park
+      else
+        nil
+      end
+    end
+  end
 
   def self.all
     @@all_states
