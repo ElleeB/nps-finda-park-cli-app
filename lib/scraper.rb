@@ -21,7 +21,8 @@ class FindaPark::Scraper
     doc = Nokogiri::HTML(open(state_url))
     parks = doc.css("div.list_left")
     parks.each do |p|
-      state_park_hash = {:designation => nil, :name => nil, :city => nil, :blurb => nil, :park_url => nil}
+      state_park_hash = {:state => nil, :designation => nil, :name => nil, :city => nil, :blurb => nil, :park_url => nil}
+      state_park_hash[:state] = doc.css("h1.page-title").text
       state_park_hash[:designation] = p.css("h2").text
       state_park_hash[:name] = p.css("a").text
       state_park_hash[:city] = p.css("h4").text

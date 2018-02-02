@@ -15,7 +15,7 @@ class FindaPark::Park
     @name = park_hash[:name]
     @state = park_hash[:state]
     @designation = park_hash[:designation]
-    @city = park_hash[:city] ## city return is odd
+    @city = park_hash[:city] # !!! city return is odd !!! #
     @park_url = park_hash[:park_url]
     @contact = park_hash[:contact]
     @blurb = park_hash[:blurb]
@@ -33,7 +33,11 @@ class FindaPark::Park
     end
   end
 
-  def add_season_info_hours
+  def add_season_info_hours(info_hash)
+    @@all.each do |park|
+      park.season_info = info_hash[:season_info]
+      park.hours = info_hash[:hours]
+    end
   end
 
   def self.all

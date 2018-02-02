@@ -1,13 +1,13 @@
 class FindaPark::State
-  attr_accessor :name, :url, :park
+  attr_accessor :name, :url, :parks
 
   @@all_states = []
-  @parks = []
+
 
   def initialize(state_hash)
     @name = state_hash[:name]
     @url = state_hash[:url]
-    @park = nil
+    @parks = []
     self.save
   end
 
@@ -18,10 +18,10 @@ class FindaPark::State
     end
   end
 
-  # use collection of state's parks to instantiate parks # add to @parks
-  def add_parks
-
-  end
+  # # use collection of state's parks to instantiate parks # add to @parks
+  # def add_parks
+  #
+  # end
 
   def self.all
     @@all_states
