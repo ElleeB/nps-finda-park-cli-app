@@ -6,10 +6,13 @@ class FindaPark::CLI
     # greet user
     puts ""
     puts "Welcome, Adventurers!"
+    puts "---------------------"
+    puts "Find your next escape in any one of the 56 states and territories listed below. Enjoy!"
     puts ""
-
     make_states
     list_states
+    make_parks
+    list_parks
   end
 
   def make_states
@@ -21,7 +24,25 @@ class FindaPark::CLI
   def list_states
     states = FindaPark::State.all
     states.each.with_index(1) do |s, i|
-      puts "#{i}* #{s.name}"
+      puts "* #{s.name} * #{i}"
+    end
+  end
+
+  def make_parks
+    puts "Please enter the number of the state you'd like to explore."
+    puts ""
+    input = gets.chomp
+    state_url = FindaPark::State.all[input.to_i - 1].url
+    parks_array = FindaPark::Scraper.state_parks_scraper(state_url)
+    FindaPark::Park.create_from_collection(parks_array)
+  end
+
+  def list_parks
+    parks = FindaPark::Park.all
+    parks.each.with_index(1) do |p, i|
+      puts ""
+      puts "#{i}.  #{p.name}"
+      puts ""
     end
   end
 
