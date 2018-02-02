@@ -25,7 +25,7 @@ class FindaPark::Scraper
       state_park_hash[:state] = doc.css("h1.page-title").text
       state_park_hash[:designation] = p.css("h2").text
       state_park_hash[:name] = p.css("a").text
-      state_park_hash[:city] = p.css("h4").text
+      state_park_hash[:location] = p.css("h4").text
       state_park_hash[:blurb] = p.css("p").text
       state_park_hash[:park_url] = "https://www.nps.gov/state#{p.css("a").attribute("href")}index.htm"
       @parks_array << state_park_hash

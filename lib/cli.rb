@@ -13,6 +13,7 @@ class FindaPark::CLI
     list_states
     make_parks
     list_parks
+    display_park_details
   end
 
   def make_states
@@ -40,15 +41,29 @@ class FindaPark::CLI
   def list_parks
     parks = FindaPark::Park.all
     parks.each.with_index(1) do |p, i|
+      puts "***"
       puts ""
-      puts "#{i}.  #{p.name}"
-      puts ""
+      puts "#{i}"
+      puts "#{p.name}" #if statements in case one of these is missing?
+      puts "#{p.location}"
+      puts "#{p.designation}"
+      puts "#{p.blurb}"
     end
   end
 
+  def display_park_details
+    puts "Please enter the number of the park you'd like to explore."
+    puts ""
+    input = gets.chomp
+    parks = FindaPark::Park.all
+    parks.each do |p|
+      puts "#{p.name}"
+      puts "#{p.location}"
+      puts "#{p.catch_phrase}"
+  end
 
-  # ask for input (state selection)
-  # present list of parks
+
+
   # ask for input (park selection)
   # display park blurb and contact info
 
