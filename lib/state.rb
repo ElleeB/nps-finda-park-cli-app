@@ -1,5 +1,3 @@
 class FindaPark::State
-  # attr_accessor :name, :city, :park
-
-
+  # attr_accessor :name, :park
 end
