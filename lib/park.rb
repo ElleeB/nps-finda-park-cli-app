@@ -17,10 +17,10 @@ class FindaPark::Park
     @designation = park_hash[:designation]
     @location = park_hash[:location] # changed from ":city"
     @park_url = park_hash[:park_url]
-    @contact = park_hash[:contact] # detailed address, city, state, zip, phone
+    @contact = park_hash[:contact] # detailed address, city, state, zip, phone ***************** I don't think these get added until cli?
     @blurb = park_hash[:blurb]
-    @info_url = park_hash[:info_url]
-    @catch_phrase = park_hash[:catch_phrase]
+    @info_url = park_hash[:info_url] # *******************
+    @catch_phrase = park_hash[:catch_phrase] # **********************
     @season_info = nil
     @hours = nil
     self.save
@@ -33,12 +33,12 @@ class FindaPark::Park
     end
   end
 
-  def self.add_season_info_hours(info_hash)
-    @@all.each do |park|
-      park.season_info = info_hash[:season_info]
-      park.hours = info_hash[:hours]
-    end
-  end
+  # def self.add_season_info_hours(info_hash)
+  #   @@all.each do |park|
+  #     park.season_info = info_hash[:season_info]
+  #     park.hours = info_hash[:hours]
+  #   end
+  # end
 
   def contact_parser # !!! need to do this !!! #
     self.contact

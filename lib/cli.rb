@@ -36,7 +36,16 @@ class FindaPark::CLI
     state_url = FindaPark::State.all[input.to_i - 1].url
     parks_array = FindaPark::Scraper.state_parks_scraper(state_url)
     FindaPark::Park.create_from_collection(parks_array)
+    # park_url = FindaPark::Park.all[input.to_i - 1].url
+    # add_park_attributes(park_url)
   end
+
+  # def add_park_attributes(park_url)
+  #   park_hash = FindaPark::Scraper.park_scraper(park_url)
+  #
+  #   info_hash = FindaPark::Scraper.info_scraper(info_url) # *********
+  #   FindaPark::Park.add_season_info_hours(info_hash)
+  # end
 
   def list_parks
     parks = FindaPark::Park.all
@@ -52,14 +61,17 @@ class FindaPark::CLI
   end
 
   def display_park_details
+    puts ""
     puts "Please enter the number of the park you'd like to explore."
     puts ""
     input = gets.chomp
-    parks = FindaPark::Park.all
-    parks.each do |p|
-      puts "#{p.name}"
-      puts "#{p.location}"
-      puts "#{p.catch_phrase}"
+    park = FindaPark::Park.all[input.to_i - 1]
+    puts "#{park.name}"
+    puts "#{park.location}"
+    puts "#{park.catch_phrase}" ## NOT WORKING
+    puts "#{park.blurb}" # + Read More
+    puts "#{park.season_info}" ## NOT WORKING
+    puts "#{park.hours}" ## NOT WORKING
   end
 
 
