@@ -1,6 +1,6 @@
 class FindaPark::Park
 
-  attr_accessor :name, :state, :designation, :city, :park_url, :contact, :blurb, :info_url, :catch_phrase, :season_info, :hours
+  attr_accessor :name, :state, :designation, :location, :park_url, :contact, :blurb, :info_url, :catch_phrase, :season_info, :hours
 
   @@all_parks = []
 
@@ -15,9 +15,9 @@ class FindaPark::Park
     @name = park_hash[:name]
     @state = park_hash[:state]
     @designation = park_hash[:designation]
-    @city = park_hash[:city] # !!! city return is odd !!! #
+    @location = park_hash[:location] # changed from ":city"
     @park_url = park_hash[:park_url]
-    @contact = park_hash[:contact]
+    @contact = park_hash[:contact] # detailed address, city, state, zip, phone
     @blurb = park_hash[:blurb]
     @info_url = park_hash[:info_url]
     @catch_phrase = park_hash[:catch_phrase]
@@ -26,18 +26,22 @@ class FindaPark::Park
     self.save
   end
 
-  # use collection of parks to instantiate instances of parks # assign designation, name, city, blurb, url
+  # use collection of parks to instantiate instances of parks # assign designation, name, location, blurb, url
   def self.create_from_collection(parks_array)
     parks_array.each do |park_hash|
       FindaPark::Park.new(park_hash)
     end
   end
 
-  def add_season_info_hours(info_hash)
+  def self.add_season_info_hours(info_hash)
     @@all.each do |park|
       park.season_info = info_hash[:season_info]
       park.hours = info_hash[:hours]
     end
+  end
+
+  def contact_parser # !!! need to do this !!! #
+    self.contact
   end
 
   def self.all
