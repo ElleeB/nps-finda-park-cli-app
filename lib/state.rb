@@ -1,29 +1,33 @@
 class FindaPark::State
-
-  attr_accessor :name, :park, :url
+  attr_accessor :name, :url, :park
 
   @@all_states = []
-
   @parks = []
 
-  def initialize
-    # define attributes
-    # add to @@all_states - .save
+  def initialize(state_hash)
+    @name = state_hash[:name]
+    @url = state_hash[:url]
+    @park = nil
+    self.save
   end
 
-  def self.create_from_collection
-    # use collection of states from scraper to instantiate instances of states
-    # assign name & url
+  # use collection of states from scraper to instantiate states
+  def self.create_from_collection(states_array)
+    states_array.each do |state_hash|
+      FindaPark::State.new(state_hash)
+    end
   end
 
+  # use collection of state's parks to instantiate parks # add to @parks
   def add_parks
-    # use collection of state's parks to instantiate instances of parks
-    # add to @parks
+
+  end
+
+  def self.all
+    @@all_states
   end
 
   def save
     @@all_states << self
   end
-
-
 end
