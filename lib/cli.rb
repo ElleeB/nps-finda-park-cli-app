@@ -13,10 +13,11 @@ class FindaPark::CLI
 
   # call
   # run
-  # make parks
-  # add attributes
-  # menu
-  # display park
+  # make_parks
+  # add_attributes
+  # states_menu
+  # parks_menu
+  # park_info
   # goodbye
 
   def call
