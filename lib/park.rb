@@ -34,23 +34,23 @@ class FindaPark::Park
   end
 
   def add_park_attributes
-    park_hash = FindaPark::Scraper.park_scraper(self.park_url)
-    @all.each do |park|
-      park.catch_phrase = park_hash[:catch_phrase]
-      park.contact = park_hash[:contact]
-      park.info_url = park_hash[:info_url]
+    @@all_parks.each do |p|
+      park_url = p.park_url
+      park_hash = FindaPark::Scraper.park_scraper(park_url) # `open_http': 404 Not Found (OpenURI::HTTPError)
+      p.catch_phrase = park_hash[:catch_phrase]
+      p.contact = park_hash[:contact]
+      p.info_url = park_hash[:info_url]
     end
   end
 
   def add_season_info_hours
-    info_hash = FindaPark::Scraper.info_scraper(self.info_url)
-    @@all.each do |park|
-      park.season_info = info_hash[:season_info]
-      park.hours = info_hash[:hours]
+    @@all_parks.each do |p|
+      info_url = p.info_url
+      info_hash = FindaPark::Scraper.info_scraper(info_url)#`open_http': 404 Not Found (OpenURI::HTTPError)
+      p.season_info = info_hash[:season_info]
+      p.hours = info_hash[:hours]
     end
   end
-
-
 
   def contact_parser # !!! need to do this !!! #
     self.contact

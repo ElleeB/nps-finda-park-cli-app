@@ -13,7 +13,7 @@ class FindaPark::CLI
     list_states
     make_parks
     list_parks
-    # add_park_attributes
+    # add_park_attributes # raises this error: `open_http': 404 Not Found (OpenURI::HTTPError)
     display_park_details
   end
 
@@ -37,20 +37,29 @@ class FindaPark::CLI
     state_url = FindaPark::State.all[input.to_i - 1].url
     parks_array = FindaPark::Scraper.state_parks_scraper(state_url)
     FindaPark::Park.create_from_collection(parks_array)
-    input
+    # input
   end
 
-  # def add_park_attributes
-  #   input = make_parks
-  #
-  #   park_url = FindaPark::Park.all[input.to_i - 1].park_url
-  #   park_hash = FindaPark::Scraper.park_scraper(park_url)
-  #   FindaPark::Park.add_park_attributes(park_hash)
-  #
-  #   info_url = FindaPark::park.all[input.to_i - 1].info_url
-  #   info_hash = FindaPark::Scraper.info_scraper(info_url)
-  #   FindaPark::Park.add_season_info_hours(info_hash)
-  # end
+  def add_park_attributes # raises this error: `open_http': 404 Not Found (OpenURI::HTTPError)
+    FindaPark::Park.all.each do |p|
+      p.add_park_attributes
+      p.add_season_info_hours
+    end
+
+    # def add_student_attributes(attributes_hash)
+    #   attributes_hash.each do |key, value|
+    #     self.send("#{key}=", value)
+    #   end
+    # end
+
+    # def add_attributes_to_students
+    #   Student.all.each do |student|
+    #     attributes = Scraper.scrape_profile_page(BASE_PATH + student.profile_url)
+    #     student.add_student_attributes(attributes)
+    #   end
+    # end
+
+  end
 
   def list_parks
     parks = FindaPark::Park.all

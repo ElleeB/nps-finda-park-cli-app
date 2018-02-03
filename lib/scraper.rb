@@ -35,7 +35,7 @@ class FindaPark::Scraper
 
   # returns a hash of park's catch phrase, contact info, and url
   def self.park_scraper(park_url)
-    park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
+    @park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
     doc = Nokogiri::HTML(open(park_url))
     park_hash[:catch_phrase] = doc.css("h1.page-title").text
     park_hash[:contact] = doc.css("div.vcard") # will need to scrape for specifics in Park class | street: span.street-address | city: span attribute = "addressLocality" | state: span.region | zip: span.postal-code | phone: span.tel
@@ -46,10 +46,13 @@ class FindaPark::Scraper
   # returns a hash of park's seasonal info and hours
   def self.info_scraper(info_url)
     doc = Nokogiri::HTML(open(info_url))
-    info_hash = {:season_info => nil, :hours => nil}
+    @info_hash = {:season_info => nil, :hours => nil}
     info_hash[:season_info] = doc.css("div.operating-hours p").text
     info_hash[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text
     info_hash
   end
+
+  def additional_attributes
+    attributes_hash =
 
 end
