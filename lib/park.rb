@@ -33,12 +33,24 @@ class FindaPark::Park
     end
   end
 
-  # def self.add_season_info_hours(info_hash)
-  #   @@all.each do |park|
-  #     park.season_info = info_hash[:season_info]
-  #     park.hours = info_hash[:hours]
-  #   end
-  # end
+  def add_park_attributes
+    park_hash = FindaPark::Scraper.park_scraper(self.park_url)
+    @all.each do |park|
+      park.catch_phrase = park_hash[:catch_phrase]
+      park.contact = park_hash[:contact]
+      park.info_url = park_hash[:info_url]
+    end
+  end
+
+  def add_season_info_hours
+    info_hash = FindaPark::Scraper.info_scraper(self.info_url)
+    @@all.each do |park|
+      park.season_info = info_hash[:season_info]
+      park.hours = info_hash[:hours]
+    end
+  end
+
+
 
   def contact_parser # !!! need to do this !!! #
     self.contact

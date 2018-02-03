@@ -13,6 +13,7 @@ class FindaPark::CLI
     list_states
     make_parks
     list_parks
+    # add_park_attributes
     display_park_details
   end
 
@@ -36,14 +37,18 @@ class FindaPark::CLI
     state_url = FindaPark::State.all[input.to_i - 1].url
     parks_array = FindaPark::Scraper.state_parks_scraper(state_url)
     FindaPark::Park.create_from_collection(parks_array)
-    # park_url = FindaPark::Park.all[input.to_i - 1].url
-    # add_park_attributes(park_url)
+    input
   end
 
-  # def add_park_attributes(park_url)
-  #   park_hash = FindaPark::Scraper.park_scraper(park_url)
+  # def add_park_attributes
+  #   input = make_parks
   #
-  #   info_hash = FindaPark::Scraper.info_scraper(info_url) # *********
+  #   park_url = FindaPark::Park.all[input.to_i - 1].park_url
+  #   park_hash = FindaPark::Scraper.park_scraper(park_url)
+  #   FindaPark::Park.add_park_attributes(park_hash)
+  #
+  #   info_url = FindaPark::park.all[input.to_i - 1].info_url
+  #   info_hash = FindaPark::Scraper.info_scraper(info_url)
   #   FindaPark::Park.add_season_info_hours(info_hash)
   # end
 
