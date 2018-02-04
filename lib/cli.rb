@@ -13,7 +13,7 @@ class FindaPark::CLI
     list_states
     make_parks
     list_parks
-    add_attributes_to_parks # raises this error: `open_http': 404 Not Found (OpenURI::HTTPError)
+    # add_attributes_to_parks # raises this error: `open_http': 404 Not Found (OpenURI::HTTPError)
     display_park_details
   end
 
@@ -35,17 +35,12 @@ class FindaPark::CLI
     puts ""
     input = gets.chomp
     state_url = FindaPark::State.all[input.to_i - 1].url
-    parks_array = FindaPark::Scraper.state_parks_scraper(state_url)
-    FindaPark::Park.create_from_collection(parks_array)
-    # input
-  end
 
-  def add_attributes_to_parks # raises this error: `open_http': 404 Not Found (OpenURI::HTTPError)
-    FindaPark::Park.all.each do |p|
-      park_url = "#{p.park_url}"
-      # attributes_hash = FindaPark::Scraper.attributes_scraper(park_url)
-      # p.add_park_attributes(attributes_hash)
-    end
+    parks_array = FindaPark::Scraper.state_parks_scraper(state_url)
+
+    # FindaPark::Scraper.attributes_scraper(parks_array)
+
+    FindaPark::Park.create_from_collection(parks_array)
   end
 
   def list_parks
@@ -54,10 +49,10 @@ class FindaPark::CLI
       puts "***"
       puts ""
       puts "#{i}"
-      puts "#{p.name}" #if statements in case one of these is missing?
-      puts "#{p.location}"
-      puts "#{p.designation}"
-      puts "#{p.blurb}"
+      puts p.name #if statements in case one of these is missing?
+      puts p.location
+      puts p.designation
+      puts p.blurb
     end
   end
 
@@ -66,13 +61,13 @@ class FindaPark::CLI
     puts "Please enter the number of the park you'd like to explore."
     puts ""
     input = gets.chomp
-    park = FindaPark::Park.all[input.to_i - 1]
-    puts "#{park.name}"
-    puts "#{park.location}"
-    puts "#{park.catch_phrase}" ## NOT WORKING
-    puts "#{park.blurb}" # + Read More
-    puts "#{park.season_info}" ## NOT WORKING
-    puts "#{park.hours}" ## NOT WORKING
+    p = FindaPark::Park.all[input.to_i - 1]
+    # puts p.name
+    # puts p.location
+    puts p.catch_phrase ## NOT WORKING
+    puts p.blurb # + Read More
+    puts p.season_info ## NOT WORKING
+    puts p.hours ## NOT WORKING
   end
 
 
@@ -92,11 +87,3 @@ class FindaPark::CLI
   # goodbye
 
 end
-
-
-    # def add_attributes_to_students
-    #   Student.all.each do |student|
-    #     attributes = Scraper.scrape_profile_page(BASE_PATH + student.profile_url)
-    #     student.add_student_attributes(attributes)
-    #   end
-    # end
