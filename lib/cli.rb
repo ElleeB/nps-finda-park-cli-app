@@ -89,10 +89,9 @@ class FindaPark::CLI
 
     ###create a contact info option/method
   end
-
   # goodbye
-
 end
+
 
 # info_url = p.info_url
 # if info_url != nil
