@@ -39,16 +39,6 @@ class FindaPark::Park
     end
   end
 
-  # def puts_contact_info
-  #   doc = self.contact
-  #   mailing = doc.css("h4.org span.street-address")
-  #   # city = doc.css("")
-  #   # zip = doc.css("")
-  #   phone = doc.css("")
-  #   puts mailing
-  #   # puts "#{city}, #{state} #{zip}"
-  # end
-
   def self.all
     @@all_parks
   end

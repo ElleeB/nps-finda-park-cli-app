@@ -63,7 +63,7 @@ class FindaPark::CLI
     end
   end
 
-  def add_hours_seasons_to_parks
+  def add_hours_seasons_to_parks # if info_url = nil puts "Sorry, but there is no more information on this park"
     FindaPark::Park.all.each do |p|
       info_url = p.info_url
       info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url)
@@ -93,3 +93,11 @@ class FindaPark::CLI
   # goodbye
 
 end
+
+# info_url = p.info_url
+# if info_url != nil
+#   info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url)
+#   p.add_hours_seasons(info_hash)
+# else
+#   puts "NO MORE INFO FOR YOU!!"
+# end

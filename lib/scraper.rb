@@ -37,26 +37,27 @@ class FindaPark::Scraper
   def self.park_page_scraper(park_url)
     park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
     doc = Nokogiri::HTML(open(park_url))
-
-    # remove unwanted element
-    f = Nokogiri::XML.fragment(doc)
-    f.search("a#anch_215.carrot_ind").remove
-
     park_hash[:catch_phrase] = doc.css("h1.page-title").text
     park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
     park_hash[:contact] = doc.css("div.vcard").text
     park_hash
   end
 
-  def self.hours_seasons_scraper(info_url)
+  def self.hours_seasons_scraper(info_url) # if info_url == nil || "404 error", nil
     info_hash = {:season_info => nil, :hours => nil}
-    doc = Nokogiri:: HTML(open(info_url))
+    doc = Nokogiri:: HTML(open(info_url)) ## 404 error for New Jersey crossroads park
     info_hash[:season_info] = doc.css("div.operating-hours p").text
     info_hash[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text
-
     info_hash
   end
 
-
-
 end
+
+# info_hash = {:season_info => nil, :hours => nil}
+# doc = Nokogiri:: HTML(open(info_url)) ## 404 error for New Jersey crossroads park
+#   if OpenURI::HTTPError.message == "404 Not Found"
+#     info_url = nil
+#   else
+#   info_hash[:season_info] = doc.css("div.operating-hours p").text
+#   info_hash[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text
+#   info_hash
