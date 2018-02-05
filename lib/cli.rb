@@ -16,7 +16,6 @@ class FindaPark::CLI
     list_parks_of_state
     # how can I improve the processing from here down?
     add_attributes_to_parks
-    add_hours_seasons_to_parks
     display_park_details
   end
 
@@ -65,21 +64,22 @@ class FindaPark::CLI
     end
   end
 
-  def add_hours_seasons_to_parks
-    FindaPark::Park.all.each do |p|
-      info_url = p.info_url
-      info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url)
-      p.add_hours_seasons(info_hash)
-    end
-  end
+  # def add_hours_seasons_to_parks
+  #   FindaPark::Park.all.each do |p|
+  #     info_url = p.info_url
+  #     info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url)
+  #     p.add_hours_seasons(info_hash)
+  #   end
+  # end
 
-  def display_park_details
+  def display_park_details # only works when haven't added hours and season info -- this was working previously
     input = gets.chomp
     p = FindaPark::Park.all[input.to_i - 1]
 
     begin
       info_url = p.info_url
       open(info_url)
+
     rescue OpenURI::HTTPError => e
 
       if e.message == '404 Not Found'
@@ -95,6 +95,8 @@ class FindaPark::CLI
       end
 
     else
+      info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
+      p.add_hours_seasons(info_hash)
       puts p.name# if statements in case one of these is missing?
       puts p.catch_phrase# if statements in case one of these is missing?
       puts p.blurb # + Read More ???  #
