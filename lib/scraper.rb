@@ -37,10 +37,6 @@ class FindaPark::Scraper
   def self.park_page_scraper(park_url)
     park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
     doc = Nokogiri::HTML(open(park_url))
-
-    # f = Nokogiri::XML.fragment(doc)
-    # f.search("div.vcard a").text.remove
-
     park_hash[:catch_phrase] = doc.css("h1.page-title").text
     park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
     park_hash[:contact] = doc.css("div.vcard").text.gsub("Contact Us", "")
