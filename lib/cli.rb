@@ -32,10 +32,11 @@ class FindaPark::CLI
     states.each.with_index(1) do |s, i|
       puts "* #{s.name} * #{i}"
     end
+    puts ""
+    puts "Please enter the number of the state you'd like to explore."
   end
 
   def make_parks
-    puts "Please enter the number of the state you'd like to explore."
     puts ""
     input = gets.chomp
     state_url = FindaPark::State.all[input.to_i - 1].url
@@ -43,7 +44,7 @@ class FindaPark::CLI
     FindaPark::Park.create_from_collection(parks_array)
   end
 
-  def list_parks #shouldn't this be listed parks that belong to the state?
+  def list_parks
     FindaPark::Park.all.each.with_index(1) do |p, i|
       puts "***"
       puts ""
@@ -53,6 +54,8 @@ class FindaPark::CLI
       puts p.designation
       puts p.blurb
     end
+    puts ""
+    puts "Please enter the number of the park you'd like to explore."
   end
 
   def add_attributes_to_parks
@@ -71,27 +74,34 @@ class FindaPark::CLI
     end
   end
 
-  def display_park_details # with 404 error handling
-    puts ""
-    puts "Please enter the number of the park you'd like to explore."
-    puts ""
+  def display_park_details # with 404 error handling | !! this method takes the longest to run (makes sense) - can I speed it up?
     input = gets.chomp
     p = FindaPark::Park.all[input.to_i - 1]
 
     begin
       info_url = p.info_url
       open(info_url)
+
     rescue OpenURI::HTTPError => e
 
       if e.message == '404 Not Found'
         puts ""
-        puts "Our apologies - there is no further infomation on this park."
+        puts "Our apologies - there is no further infomation on the following park:"
+        puts ""
         puts p.name
-        puts p.catch_phrase
-        puts p.blurb # + Read More ???  #
-
+        puts ""
+        puts "----------------------------------------------------------------------------------------------------------"
+        puts "Please enter 'parks' to return to the parks menu, 'states' to return to the states menu, or 'exit' to quit"
+        puts ""
+        input = gets.chomp.downcase
+        if input == "parks"
+          list_parks #!!! (how - variable?) !!!
+        elsif input == "states"
+          run
+        elsif input == "exit"
+          goodbye
+        end
       else
-        # next
         puts p.name
         puts p.catch_phrase
         puts p.blurb # + Read More ???  #
@@ -101,26 +111,11 @@ class FindaPark::CLI
         puts ""
         puts p.contact
       end
-
     end
   end
 
-  # def display_park_details
-  #   puts ""
-  #   puts "Please enter the number of the park you'd like to explore."
-  #   puts ""
-  #   input = gets.chomp
-  #   p = FindaPark::Park.all[input.to_i - 1]
-  #   puts p.name
-  #   puts p.catch_phrase
-  #   puts p.blurb # + Read More ???  #
-  #   puts ""
-  #   puts p.season_info
-  #   puts p.hours
-  #   puts ""
-  #   puts p.contact
-  #
-  #   ###create a contact info option/method
-  # end
-  # goodbye
+  def goodbye
+    puts "Thanks for visiting. Cheers to your next adventure!"
+  end
+
 end
