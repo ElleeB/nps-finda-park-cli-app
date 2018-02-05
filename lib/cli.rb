@@ -18,6 +18,7 @@ class FindaPark::CLI
     make_parks
     list_parks
     add_attributes_to_parks
+    # add_hours_seasons_to_parks
     display_park_details
   end
 
@@ -58,24 +59,33 @@ class FindaPark::CLI
   def add_attributes_to_parks
     FindaPark::Park.all.each do |p|
       park_url = p.park_url
-      attributes = FindaPark::Scraper.park_page_scraper(park_url)
-      p.add_attributes(attributes)
+      attributes_hash = FindaPark::Scraper.park_page_scraper(park_url)
+      p.add_attributes(attributes_hash)
+    end
+  end
+
+  def add_hours_seasons_to_parks
+    FindaPark::Park.all.each do |p|
+      info_url = p.info_url
+      info_hash = FindaPark::Scraper.park_page_scraper(info_url)
+      p.add_hours_seasons(info_hash)
     end
   end
 
 
   def display_park_details
+    add_hours_seasons_to_parks
     puts ""
     puts "Please enter the number of the park you'd like to explore."
     puts ""
     input = gets.chomp
     p = FindaPark::Park.all[input.to_i - 1]
     puts p.name
-    puts p.contact
-    puts p.catch_phrase ## NOT WORKING undefined method `catch_phrase' for nil:NilClass (NoMethodError)
+    # puts p.contact
+    puts p.catch_phrase
     puts p.blurb # + Read More
-    # puts p.season_info ## NOT WORKING
-    # puts p.hours ## NOT WORKING
+    puts p.season_info
+    puts p.hours
   end
 
 

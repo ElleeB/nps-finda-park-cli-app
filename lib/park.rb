@@ -33,6 +33,12 @@ class FindaPark::Park
     end
   end
 
+  def add_hours_seasons(info_hash)
+    info_hash.each do |key, value|
+      self.send("#{key}=", value)
+    end
+  end
+
   def self.all
     @@all_parks
   end

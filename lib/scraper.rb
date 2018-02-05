@@ -33,10 +33,7 @@ class FindaPark::Scraper
     @parks_array
   end
 
-  ##########################################
-  # Above working perfectly #
-
-  # This doesn't happen until after the states and parks are made
+  # This won't happen until after the states and parks are made
   def self.park_page_scraper(park_url)
     park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
     doc = Nokogiri::HTML(open(park_url))
@@ -46,24 +43,12 @@ class FindaPark::Scraper
     park_hash
   end
 
-
-
-
-
-
-
-
-
-  # def self.additional_info_scraper(park_url)
-  #   doc = Nokogiri::HTML(open(park_url))
-  #   FindaPark::Park.all do |park_hash|
-  #     park_hash[:catch_phrase] = doc.css("h1.page-title").text
-  #     park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
-  #   end
-  # end
-
-  def self.hours_seasons_scraper(parks_array)
-    # (info_url) :season_info => nil, :hours => nil}
+  def self.hours_seasons_scraper(info_url)
+    info_hash = {:season_info => nil, :hours => nil}
+    doc = Nokogiri:: HTML(open(info_url))
+    info_hash[:season_info] = doc.css("div.operating-hours p").text
+    info_hash[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text
+    info_hash
   end
 
 end
