@@ -47,6 +47,11 @@ class FindaPark::Park
     end
   end
 
+  def validate_attributes
+    attributes = [:name, :state, :designation, :location, :park_url, :contact, :blurb, :info_url, :catch_phrase, :season_info, :hours]
+    attributes.each{ |k, v| puts k }
+  end
+
   def self.all
     @@all_parks
   end
