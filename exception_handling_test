@@ -32,10 +32,6 @@ def display_park_details # with 404 error handling
   end
 end
 
-
-
-
-
 def add_hours_seasons_to_parks # works but prematurely - needs to check for valid only once park is chosen via display_park_details
   FindaPark::Park.all.each do |p|
       begin

@@ -91,18 +91,20 @@ class FindaPark::CLI
         puts p.name
         puts ""
         puts "----------------------------------------------------------------------------------------------------------"
-        puts "Please enter 'parks' to return to the parks menu, 'states' to return to the states menu, or 'exit' to quit"
-        puts ""
-        input = gets.chomp.downcase
 
-        if input == "parks"
-          list_parks_of_state
-          display_park_details
-        elsif input == "states"
-          run
-        elsif input == "exit"
-          goodbye
-        end
+        input_options
+        # puts "Please enter 'parks' to return to the parks menu, 'states' to return to the states menu, or 'exit' to quit"
+        # puts ""
+        # input = gets.chomp.downcase
+        #
+        # if input == "parks"
+        #   list_parks_of_state
+        #   display_park_details
+        # elsif input == "states"
+        #   run
+        # elsif input == "exit"
+        #   goodbye
+        # end
 
       else # now this is broken and won't work for funtioning links
         nil
@@ -116,6 +118,36 @@ class FindaPark::CLI
       puts p.hours
       puts ""
       puts p.contact
+      puts "----------------------------------------------------------------------------------------------------------"
+
+      input_options
+      # puts "Please enter 'parks' to return to the parks menu, 'states' to return to the states menu, or 'exit' to quit"
+      # puts ""
+      # input = gets.chomp.downcase
+      #
+      # if input == "parks"
+      #   list_parks_of_state
+      #   display_park_details
+      # elsif input == "states"
+      #   run
+      # elsif input == "exit"
+      #   goodbye
+      # end
+    end
+  end
+
+  def input_options
+    puts "Please enter 'parks' to return to the parks menu, 'states' to return to the states menu, or 'exit' to quit"
+    puts ""
+    input = gets.chomp.downcase
+
+    if input == "parks"
+      list_parks_of_state
+      display_park_details
+    elsif input == "states"
+      run
+    elsif input == "exit"
+      goodbye
     end
   end
 
