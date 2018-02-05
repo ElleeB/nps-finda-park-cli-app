@@ -9,11 +9,15 @@ class FindaPark::CLI
     puts "---------------------"
     puts "Find your next escape in any one of the 56 states and territories listed below. Enjoy!"
     puts ""
+    run
+  end
+
+  def run
     make_states
     list_states
     make_parks
     list_parks
-    # add_attributes_to_parks # raises this error: `open_http': 404 Not Found (OpenURI::HTTPError)
+    #add park details
     display_park_details
   end
 
@@ -35,17 +39,12 @@ class FindaPark::CLI
     puts ""
     input = gets.chomp
     state_url = FindaPark::State.all[input.to_i - 1].url
-
     parks_array = FindaPark::Scraper.state_parks_scraper(state_url)
-
-    # FindaPark::Scraper.attributes_scraper(parks_array)
-
     FindaPark::Park.create_from_collection(parks_array)
   end
 
-  def list_parks
-    parks = FindaPark::Park.all
-    parks.each.with_index(1) do |p, i|
+  def list_parks #shouldn't this be listed parks that belong to the state?
+    FindaPark::Park.all.each.with_index(1) do |p, i|
       puts "***"
       puts ""
       puts "#{i}"
@@ -62,12 +61,13 @@ class FindaPark::CLI
     puts ""
     input = gets.chomp
     p = FindaPark::Park.all[input.to_i - 1]
-    # puts p.name
-    # puts p.location
-    puts p.catch_phrase ## NOT WORKING
+    puts p.name
+    # puts p.contact
+    # puts p.catch_phrase ## NOT WORKING undefined method `catch_phrase' for nil:NilClass (NoMethodError)
+
     puts p.blurb # + Read More
-    puts p.season_info ## NOT WORKING
-    puts p.hours ## NOT WORKING
+    # puts p.season_info ## NOT WORKING
+    # puts p.hours ## NOT WORKING
   end
 
 
