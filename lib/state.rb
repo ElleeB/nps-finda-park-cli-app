@@ -17,16 +17,9 @@ class FindaPark::State
     end
   end
 
-  # use collection of parks to add to parks array if state name matches
-  def add_parks
-    FindaPark::Park.all.each do |park|
-      if park.state == self.name
-        @parks << park
-      else
-        nil
-      end
-    end
-  end
+  # def parks
+  #   @parks
+  # end
 
   def self.all
     @@all_states

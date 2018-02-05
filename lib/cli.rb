@@ -95,7 +95,7 @@ class FindaPark::CLI
         puts ""
         input = gets.chomp.downcase
         if input == "parks"
-          list_parks #!!! (how - variable?) !!!
+          puts p.state.parks
         elsif input == "states"
           run
         elsif input == "exit"
@@ -112,6 +112,11 @@ class FindaPark::CLI
         puts p.contact
       end
     end
+  end
+
+  def list_states_parks
+    ### state.all_parks
+    ### for error handling option
   end
 
   def goodbye
