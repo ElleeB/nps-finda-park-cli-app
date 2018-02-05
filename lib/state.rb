@@ -17,10 +17,6 @@ class FindaPark::State
     end
   end
 
-  # def parks
-  #   @parks
-  # end
-
   def self.all
     @@all_states
   end

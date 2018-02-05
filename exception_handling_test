@@ -8,6 +8,7 @@ def display_park_details # with 404 error handling
   begin
     info_url = p.info_url
     open(info_url)
+
   rescue OpenURI::HTTPError => e
 
     if e.message == '404 Not Found'

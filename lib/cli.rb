@@ -15,8 +15,8 @@ class FindaPark::CLI
   def run
     make_states
     list_states
-    make_parks
-    list_parks
+    make_parks_of_state
+    list_parks_of_state
     add_attributes_to_parks
     display_park_details
   end
@@ -36,7 +36,7 @@ class FindaPark::CLI
     puts "Please enter the number of the state you'd like to explore."
   end
 
-  def make_parks
+  def make_parks_of_state
     puts ""
     input = gets.chomp
     state_url = FindaPark::State.all[input.to_i - 1].url
@@ -44,7 +44,7 @@ class FindaPark::CLI
     FindaPark::Park.create_from_collection(parks_array)
   end
 
-  def list_parks
+  def list_parks_of_state
     FindaPark::Park.all.each.with_index(1) do |p, i|
       puts "***"
       puts ""
@@ -94,29 +94,29 @@ class FindaPark::CLI
         puts "Please enter 'parks' to return to the parks menu, 'states' to return to the states menu, or 'exit' to quit"
         puts ""
         input = gets.chomp.downcase
+
         if input == "parks"
-          puts p.state.parks
+          list_parks_of_state
+          display_park_details
         elsif input == "states"
           run
         elsif input == "exit"
           goodbye
         end
-      else
-        puts p.name
-        puts p.catch_phrase
-        puts p.blurb # + Read More ???  #
-        puts ""
-        puts p.season_info
-        puts p.hours
-        puts ""
-        puts p.contact
-      end
-    end
-  end
 
-  def list_states_parks
-    ### state.all_parks
-    ### for error handling option
+      else # now this is broken and won't work for funtioning links
+        nil
+      end
+    else
+      puts p.name
+      puts p.catch_phrase
+      puts p.blurb # + Read More ???  #
+      puts ""
+      puts p.season_info
+      puts p.hours
+      puts ""
+      puts p.contact
+    end
   end
 
   def goodbye
