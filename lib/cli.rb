@@ -71,32 +71,56 @@ class FindaPark::CLI
     end
   end
 
-  def display_park_details
-    add_hours_seasons_to_parks
+  def display_park_details # with 404 error handling
     puts ""
     puts "Please enter the number of the park you'd like to explore."
     puts ""
     input = gets.chomp
     p = FindaPark::Park.all[input.to_i - 1]
-    puts p.name
-    puts p.catch_phrase
-    puts p.blurb # + Read More ???  #
-    puts ""
-    puts p.season_info
-    puts p.hours
-    puts ""
-    puts p.contact
 
-    ###create a contact info option/method
+    begin
+      info_url = p.info_url
+      open(info_url)
+    rescue OpenURI::HTTPError => e
+
+      if e.message == '404 Not Found'
+        puts ""
+        puts "Our apologies - there is no further infomation on this park."
+        puts p.name
+        puts p.catch_phrase
+        puts p.blurb # + Read More ???  #
+
+      else
+        # next
+        puts p.name
+        puts p.catch_phrase
+        puts p.blurb # + Read More ???  #
+        puts ""
+        puts p.season_info
+        puts p.hours
+        puts ""
+        puts p.contact
+      end
+
+    end
   end
+
+  # def display_park_details
+  #   puts ""
+  #   puts "Please enter the number of the park you'd like to explore."
+  #   puts ""
+  #   input = gets.chomp
+  #   p = FindaPark::Park.all[input.to_i - 1]
+  #   puts p.name
+  #   puts p.catch_phrase
+  #   puts p.blurb # + Read More ???  #
+  #   puts ""
+  #   puts p.season_info
+  #   puts p.hours
+  #   puts ""
+  #   puts p.contact
+  #
+  #   ###create a contact info option/method
+  # end
   # goodbye
 end
-
-
-# info_url = p.info_url
-# if info_url != nil
-#   info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url)
-#   p.add_hours_seasons(info_hash)
-# else
-#   puts "NO MORE INFO FOR YOU!!"
-# end

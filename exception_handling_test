@@ -1,0 +1,101 @@
+def display_park_details # with 404 error handling
+  puts ""
+  puts "Please enter the number of the park you'd like to explore."
+  puts ""
+  input = gets.chomp
+  p = FindaPark::Park.all[input.to_i - 1]
+
+  begin
+    info_url = p.info_url
+    open(info_url)
+  rescue OpenURI::HTTPError => e
+
+    if e.message == '404 Not Found'
+      puts "Our apologies - there is no further infomation on this park."
+      puts p.name
+      puts p.catch_phrase
+      puts p.blurb # + Read More ???  #
+
+    else
+      next
+      puts p.name
+      puts p.catch_phrase
+      puts p.blurb # + Read More ???  #
+      puts ""
+      puts p.season_info
+      puts p.hours
+      puts ""
+      puts p.contact
+    end
+
+  end
+end
+
+
+
+
+
+def add_hours_seasons_to_parks # works but prematurely - needs to check for valid only once park is chosen via display_park_details
+  FindaPark::Park.all.each do |p|
+      begin
+      info_url = p.info_url
+      doc = open(info_url)
+    rescue OpenURI::HTTPError => e
+      if e.message == '404 Not Found'
+        puts "Our apologies - there is no further infomation on this park."
+      else
+        next
+        info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url)
+        p.add_hours_seasons(info_hash)
+      end
+    end
+  end
+end
+
+
+def valid_url?
+  urls.each do |url|
+    begin
+      doc = open(url)
+    rescue Timeout::Error
+      puts "The request for a page at #{url} timed out...skipping."
+      next
+    rescue OpenURI::Error => e
+      puts "The request for a page at #{url} returned an error. #{e.message}"
+      next
+    end
+  end
+
+  doc = open(info_url)
+rescue doc.OpenURI::Error => e
+  e.message == '404 Not Found'
+  puts "Our apologies - there is no further infomation on this park."
+  next
+
+  url = 'http://yoursite/page/38475'
+begin
+  file = open(url)
+  doc = Nokogiri::HTML(file) do
+    # handle doc
+  end
+rescue OpenURI::HTTPError => e
+  if e.message == '404 Not Found'
+    # handle 404 error
+  else
+    raise e
+  end
+
+
+  # def valid_url?(info_url)
+  #   begin
+  #     doc = Nokogiri::HTML(open(info_url)) do
+  #       puts "Checking URL"
+  #     end
+  #   rescue OpenURI::HTTPError => e
+  #     if e.message == '404 Not Found'
+  #       false
+  #     elsif OpenURI::HTTPError.message != '404 Not Found'
+  #       true
+  #     end
+  #   end
+  # end
