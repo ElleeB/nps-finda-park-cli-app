@@ -11,7 +11,7 @@ class FindaPark::Park
     @designation = park_hash[:designation]
     @location = park_hash[:location] # changed from ":city"
     @park_url = park_hash[:park_url]
-    # @contact = contact # detailed address, city, state, zip, phone ***************** I don't think these get added until cli?
+    @contact = nil # detailed address, city, state, zip, phone ***************** I don't think these get added until cli?
     @blurb = park_hash[:blurb]
     @info_url = nil
     @catch_phrase = nil
@@ -38,6 +38,16 @@ class FindaPark::Park
       self.send("#{key}=", value)
     end
   end
+
+  # def puts_contact_info
+  #   doc = self.contact
+  #   mailing = doc.css("h4.org span.street-address")
+  #   # city = doc.css("")
+  #   # zip = doc.css("")
+  #   phone = doc.css("")
+  #   puts mailing
+  #   # puts "#{city}, #{state} #{zip}"
+  # end
 
   def self.all
     @@all_parks

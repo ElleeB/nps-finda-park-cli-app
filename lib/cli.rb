@@ -18,7 +18,6 @@ class FindaPark::CLI
     make_parks
     list_parks
     add_attributes_to_parks
-    # add_hours_seasons_to_parks
     display_park_details
   end
 
@@ -67,11 +66,10 @@ class FindaPark::CLI
   def add_hours_seasons_to_parks
     FindaPark::Park.all.each do |p|
       info_url = p.info_url
-      info_hash = FindaPark::Scraper.park_page_scraper(info_url)
+      info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url)
       p.add_hours_seasons(info_hash)
     end
   end
-
 
   def display_park_details
     add_hours_seasons_to_parks
@@ -81,27 +79,17 @@ class FindaPark::CLI
     input = gets.chomp
     p = FindaPark::Park.all[input.to_i - 1]
     puts p.name
-    # puts p.contact
     puts p.catch_phrase
-    puts p.blurb # + Read More
+    puts p.blurb # + Read More ???  #
+    puts ""
     puts p.season_info
     puts p.hours
+    puts ""
+    puts p.contact
+
+    ###create a contact info option/method
   end
 
-
-
-  # ask for input (park selection)
-  # display park blurb and contact info
-
-  # methods
-
-  # call
-  # run
-  # make_parks
-  # add_attributes
-  # states_menu
-  # parks_menu
-  # park_info
   # goodbye
 
 end

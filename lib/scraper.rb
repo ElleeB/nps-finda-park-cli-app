@@ -37,9 +37,14 @@ class FindaPark::Scraper
   def self.park_page_scraper(park_url)
     park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
     doc = Nokogiri::HTML(open(park_url))
+
+    # remove unwanted element
+    f = Nokogiri::XML.fragment(doc)
+    f.search("a#anch_215.carrot_ind").remove
+
     park_hash[:catch_phrase] = doc.css("h1.page-title").text
     park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
-    park_hash[:contact] = doc.css("div.vcard")
+    park_hash[:contact] = doc.css("div.vcard").text
     park_hash
   end
 
@@ -48,35 +53,10 @@ class FindaPark::Scraper
     doc = Nokogiri:: HTML(open(info_url))
     info_hash[:season_info] = doc.css("div.operating-hours p").text
     info_hash[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text
+
     info_hash
   end
 
+
+
 end
-
-
-
-
-
-    # # add additional attributes from park's page
-    # @parks_array.each do |p|
-    #   park_url = p[:park_url]
-    #   doc = Nokogiri::HTML(open(park_url))
-    #   p[:catch_phrase] = doc.css("h1.page-title").text
-    #   # p[:contact] = doc.css("div.vcard")
-    #   p[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
-    # end
-    #
-    # # add additional attributes from park's info page
-    # @parks_array.each do |p|
-    #   info_url = p[:info_url]
-    #   doc = Nokogiri:: HTML(open(info_url))
-    #   p[:season_info] = doc.css("div.operating-hours p").text
-    #   p[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text
-    # end
-
-
-# park_url = p[:park_url]
-# doc = Nokogiri::HTML(open(park_url))
-# p[:catch_phrase] = doc.css("h1.page-title").text
-# # p[:contact] = doc.css("div.vcard")
-# p[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
