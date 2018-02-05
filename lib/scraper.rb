@@ -38,11 +38,12 @@ class FindaPark::Scraper
 
   # This doesn't happen until after the states and parks are made
   def self.park_page_scraper(park_url)
-    single_park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
+    park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
     doc = Nokogiri::HTML(open(park_url))
-    single_park_hash[:catch_phrase] = doc.css("h1.page-title").text
-    single_park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
-    single_park_hash
+    park_hash[:catch_phrase] = doc.css("h1.page-title").text
+    park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
+    park_hash[:contact] = doc.css("div.vcard")
+    park_hash
   end
 
 

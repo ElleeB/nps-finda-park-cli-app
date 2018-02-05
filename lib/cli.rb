@@ -71,9 +71,8 @@ class FindaPark::CLI
     input = gets.chomp
     p = FindaPark::Park.all[input.to_i - 1]
     puts p.name
-    # puts p.contact
+    puts p.contact
     puts p.catch_phrase ## NOT WORKING undefined method `catch_phrase' for nil:NilClass (NoMethodError)
-
     puts p.blurb # + Read More
     # puts p.season_info ## NOT WORKING
     # puts p.hours ## NOT WORKING
