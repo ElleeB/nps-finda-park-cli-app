@@ -17,7 +17,7 @@ class FindaPark::CLI
     list_states
     make_parks
     list_parks
-    #add park details
+    add_attributes_to_parks
     display_park_details
   end
 
@@ -55,6 +55,15 @@ class FindaPark::CLI
     end
   end
 
+  def add_attributes_to_parks
+    FindaPark::Park.all.each do |p|
+      park_url = p.park_url
+      attributes = FindaPark::Scraper.park_page_scraper(park_url)
+      p.add_attributes(attributes)
+    end
+  end
+
+
   def display_park_details
     puts ""
     puts "Please enter the number of the park you'd like to explore."
@@ -63,7 +72,7 @@ class FindaPark::CLI
     p = FindaPark::Park.all[input.to_i - 1]
     puts p.name
     # puts p.contact
-    # puts p.catch_phrase ## NOT WORKING undefined method `catch_phrase' for nil:NilClass (NoMethodError)
+    puts p.catch_phrase ## NOT WORKING undefined method `catch_phrase' for nil:NilClass (NoMethodError)
 
     puts p.blurb # + Read More
     # puts p.season_info ## NOT WORKING

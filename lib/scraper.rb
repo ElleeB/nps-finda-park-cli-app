@@ -21,7 +21,7 @@ class FindaPark::Scraper
     doc = Nokogiri::HTML(open(state_url))
     parks = doc.css("div.list_left")
     parks.each do |p|
-      state_park_hash = {:state => nil, :designation => nil, :name => nil, :location => nil, :blurb => nil, :park_url => nil, :season_info => nil, :hours => nil}
+      state_park_hash = {:state => nil, :designation => nil, :name => nil, :location => nil, :blurb => nil, :park_url => nil}
       state_park_hash[:state] = doc.css("h1.page-title").text
       state_park_hash[:designation] = p.css("h2").text
       state_park_hash[:name] = p.css("a").text
@@ -33,14 +33,26 @@ class FindaPark::Scraper
     @parks_array
   end
 
+  ##########################################
+  # Above working perfectly #
+
   # This doesn't happen until after the states and parks are made
-  def self.additional_info_scraper(park_url)
-    FindaPark::Park.all.each do |park_hash|
-      doc = Nokogiri::HTML(open("#{park_hash[:park_url]}"))
-      park_hash[:catch_phrase] = doc.css("h1.page-title").text
-      park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
-    end
+  def self.park_page_scraper(park_url)
+    single_park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
+    doc = Nokogiri::HTML(open(park_url))
+    single_park_hash[:catch_phrase] = doc.css("h1.page-title").text
+    single_park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
+    single_park_hash
   end
+
+
+
+
+
+
+
+
+
   # def self.additional_info_scraper(park_url)
   #   doc = Nokogiri::HTML(open(park_url))
   #   FindaPark::Park.all do |park_hash|
@@ -50,7 +62,7 @@ class FindaPark::Scraper
   # end
 
   def self.hours_seasons_scraper(parks_array)
-    # (info_url)
+    # (info_url) :season_info => nil, :hours => nil}
   end
 
 end
