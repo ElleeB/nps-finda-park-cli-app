@@ -100,16 +100,14 @@ class FindaPark::CLI
       p.add_hours_seasons(info_hash)
       puts p.name
       puts p.catch_phrase
-      puts p.blurb # + Read More ???  #
+      puts p.blurb
       puts
       puts "Season Information:"
-      puts p.season_info
+      p.season_info == "" ? (puts "NA") : p.season_info
       puts
       puts "Hours:"
-      puts p.hours
-      # puts
-      # puts p.contact
-      puts p.street_address
+      p.hours == "" ? (puts "NA") : p.hours
+      p.street_address == "" ? (puts "NA") : p.street_address
       puts p.phone
       puts "----------------------------------------------------------------------------------------------------------"
       input_options
