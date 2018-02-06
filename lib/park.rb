@@ -1,6 +1,6 @@
 class FindaPark::Park
 
-  attr_accessor :name, :state, :designation, :location, :park_url, :contact, :blurb, :info_url, :catch_phrase, :season_info, :hours
+  attr_accessor :name, :state, :designation, :location, :park_url, :street_address, :phone, :blurb, :info_url, :catch_phrase, :season_info, :hours
 
   @@all_parks = []
 
@@ -44,6 +44,20 @@ class FindaPark::Park
   def add_hours_seasons(info_hash)
     info_hash.each do |key, value|
       self.send("#{key}=", value)
+    end
+  end
+
+  def valid_attributes
+    p.instance_variables.each do |a|
+
+      puts a
+
+
+    #   if a == nil
+    #     puts "nil"
+    #   else
+    #     puts "not nil!"
+    #   end
     end
   end
 

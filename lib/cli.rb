@@ -14,8 +14,7 @@ class FindaPark::CLI
     list_states
     make_parks_of_state
     list_parks_of_state
-    # how can I improve the processing from here down?
-    add_attributes_to_parks
+    add_attributes_to_parks # how can I improve the processing from here down?
     display_park_details
   end
 
@@ -47,13 +46,14 @@ class FindaPark::CLI
       puts "***"
       puts
       puts "#{i}"
-      puts p.name # if statements in case one of these is missing?
-      puts p.location # if statements in case one of these is missing?
-      puts p.designation # if statements in case one of these is missing?
-      puts p.blurb # if statements in case one of these is missing?
+      puts p.name
+      puts p.location
+      puts p.designation
+      puts p.blurb
     end
     puts
     puts "Please enter the number of the park you'd like to explore."
+    puts
   end
 
   def add_attributes_to_parks
@@ -72,7 +72,7 @@ class FindaPark::CLI
   #   end
   # end
 
-  def display_park_details # only works when haven't added hours and season info -- this was working previously
+  def display_park_details
     input = gets.chomp
     p = FindaPark::Park.all[input.to_i - 1]
 
@@ -86,8 +86,6 @@ class FindaPark::CLI
         puts
         puts "Our apologies - there is no further infomation on the following park:"
         puts
-        puts p.name
-        puts
         puts "----------------------------------------------------------------------------------------------------------"
         input_options
       else
@@ -95,16 +93,23 @@ class FindaPark::CLI
       end
 
     else
+      puts
+      puts "***"
       info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
       p.add_hours_seasons(info_hash)
-      puts p.name# if statements in case one of these is missing?
-      puts p.catch_phrase# if statements in case one of these is missing?
+      puts p.name
+      puts p.catch_phrase
       puts p.blurb # + Read More ???  #
+      puts ### From here down needs formatting!!
+      puts "Season Information:"
+      puts p.season_info
       puts
-      puts p.season_info# if statements in case one of these is missing?
-      puts p.hours# if statements in case one of these is missing?
+      puts "Hours:"
+      puts p.hours
       puts
-      puts p.contact# if statements in case one of these is missing?
+      # puts p.contact
+      puts p.street_address
+      puts p.phone
       puts "----------------------------------------------------------------------------------------------------------"
       input_options
     end
@@ -129,3 +134,12 @@ class FindaPark::CLI
     puts "Thanks for visiting. Cheers to your next adventure!"
   end
 end
+
+# what to do when no info link (link == nil I think)? ex. # info_url error american samoa park 1 BECAUSE THERE IS NONE
+# what to do when one of the instance variables is nil (because the giant space is terrible) puts ""
+# object.instance_variable_get(:@a)    #=> "cat"
+# object.instance_variable_get("@b")   #=> 99
+
+#object.instance_variables #=> @name etc.
+
+# connecticut park 5 no hours

@@ -35,19 +35,27 @@ class FindaPark::Scraper
 
   # This won't happen until after the states and parks are made
   def self.park_page_scraper(park_url)
-    park_hash = {:catch_phrase => nil, :contact => nil, :info_url => nil}
+    park_hash = {:catch_phrase => nil, :street_address => nil, :phone => nil, :info_url => nil}
     doc = Nokogiri::HTML(open(park_url))
     park_hash[:catch_phrase] = doc.css("h1.page-title").text
     park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
-    park_hash[:contact] = doc.css("div.vcard").text.gsub("Contact Us", "")
+    # park_hash[:contact] = doc.css("div.vcard").text.gsub("\n", ' ').strip
+    park_hash[:street_address] = doc.css("div.mailing-address").text.squeeze("\n")
+    park_hash[:phone] = doc.css("div.mailing-address span.tel").text
     park_hash
   end
 
-  def self.hours_seasons_scraper(info_url) # if info_url == nil || "404 error", nil
+  def self.hours_seasons_scraper(info_url)
     info_hash = {:season_info => nil, :hours => nil}
-    doc = Nokogiri:: HTML(open(info_url)) ## 404 error for New Jersey crossroads park
-    info_hash[:season_info] = doc.css("div.operating-hours p").text
-    info_hash[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text
+    doc = Nokogiri:: HTML(open(info_url))
+    info_hash[:season_info] = doc.css("div.operating-hours p").text.strip
+    info_hash[:hours] = doc.css("div.col-sm-12.HoursSection.clearfix ul").text.strip.gsub("\n\n", "  ")
     info_hash
   end
 end
+
+
+#####
+
+# :street_address p.adr span.street-address.text or div.mailing-address
+# :phone  div.mailing-address span.tel.text
