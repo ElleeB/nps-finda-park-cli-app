@@ -95,18 +95,19 @@ class FindaPark::CLI
     else
       puts
       puts "***"
+      puts
       info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
       p.add_hours_seasons(info_hash)
       puts p.name
       puts p.catch_phrase
       puts p.blurb # + Read More ???  #
-      puts ### From here down needs formatting!!
+      puts
       puts "Season Information:"
       puts p.season_info
       puts
       puts "Hours:"
       puts p.hours
-      puts
+      # puts
       # puts p.contact
       puts p.street_address
       puts p.phone
@@ -143,3 +144,5 @@ end
 #object.instance_variables #=> @name etc.
 
 # connecticut park 5 no hours
+
+# virgin islands park 2 no hours or season info

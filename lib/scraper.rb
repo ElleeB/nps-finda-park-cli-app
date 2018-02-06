@@ -41,7 +41,7 @@ class FindaPark::Scraper
     park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
     # park_hash[:contact] = doc.css("div.vcard").text.gsub("\n", ' ').strip
     park_hash[:street_address] = doc.css("div.mailing-address").text.squeeze("\n")
-    park_hash[:phone] = doc.css("div.mailing-address span.tel").text
+    park_hash[:phone] = doc.css("div#ParkFooter span.tel").text
     park_hash
   end
 

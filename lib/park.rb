@@ -4,19 +4,19 @@ class FindaPark::Park
 
   @@all_parks = []
 
-  # !!! see below for abstraction !!! #
   def initialize(park_hash)
     @name = park_hash[:name]
     @state = park_hash[:state]
     @designation = park_hash[:designation]
-    @location = park_hash[:location] # changed from ":city"
+    @location = park_hash[:location]
     @park_url = park_hash[:park_url]
-    @contact = nil # detailed address, city, state, zip, phone ***************** I don't think these get added until cli?
     @blurb = park_hash[:blurb]
     @info_url = nil
     @catch_phrase = nil
     @season_info = nil
     @hours = nil
+    @street_address = nil
+    @phone = nil
     self.save
   end
 
