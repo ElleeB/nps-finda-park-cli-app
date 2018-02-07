@@ -57,5 +57,13 @@ end
 
 #####
 
+
+    # Opting for NA format in cli.rb
+    # info_hash.each do |key, value|
+    #   if value == nil
+    #     info_hash.delete(key)
+    #   end
+    # end
+
 # :street_address p.adr span.street-address.text or div.mailing-address
 # :phone  div.mailing-address span.tel.text

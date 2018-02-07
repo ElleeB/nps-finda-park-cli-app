@@ -48,8 +48,8 @@ class FindaPark::CLI
       puts "#{i}"
       puts p.name
       puts p.location
-      puts p.designation
-      puts p.blurb
+      puts p.designation == "" ? (puts "NA") : p.designation
+      puts p.blurb == "" ? (puts "NA") : p.blurb
     end
     puts
     puts "Please enter the number of the park you'd like to explore."
@@ -98,17 +98,17 @@ class FindaPark::CLI
       puts
       info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
       p.add_hours_seasons(info_hash)
-      puts p.name
-      puts p.catch_phrase
-      puts p.blurb
+      puts p.name == "" ? (puts "NA") : p.name
+      puts p.catch_phrase == "" ? (puts "NA") : p.catch_phrase
+      puts p.blurb == "" ? (puts "NA") : p.blurb
       puts
       puts "Season Information:"
-      p.season_info == "" ? (puts "NA") : p.season_info
+      p.season_info == "" || "nil" ? (puts "NA") : p.season_info # "nil" necessary when the info_url doesn't exist for a park
       puts
       puts "Hours:"
-      p.hours == "" ? (puts "NA") : p.hours
+      p.hours == "" ? (puts "NA") || "nil" : p.hours # "nil" necessary when the info_url doesn't exist for a park
       p.street_address == "" ? (puts "NA") : p.street_address
-      puts p.phone
+      puts p.phone == "" ? (puts "NA") : p.phone
       puts "----------------------------------------------------------------------------------------------------------"
       input_options
     end
@@ -133,6 +133,8 @@ class FindaPark::CLI
     puts "Thanks for visiting. Cheers to your next adventure!"
   end
 end
+
+## !!!!! Turn the '== "" ? (puts "NA") || "nil" : p.hours # "nil" necessary when the info_url doesn't exist for a park' into its own method, using .instance_variables?
 
 # what to do when no info link (link == nil I think)? ex. # info_url error american samoa park 1 BECAUSE THERE IS NONE
 # what to do when one of the instance variables is nil (because the giant space is terrible) puts ""
