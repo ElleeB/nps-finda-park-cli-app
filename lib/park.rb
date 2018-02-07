@@ -47,30 +47,6 @@ class FindaPark::Park
     end
   end
 
-  def valid_attributes
-    p.instance_variables.each do |a|
-
-      puts a
-
-
-    #   if a == nil
-    #     puts "nil"
-    #   else
-    #     puts "not nil!"
-    #   end
-    end
-  end
-
-  # def validate_attributes
-  #   instance_variables.find do |v|
-  #     if v == nil
-  #       puts v
-  #     else
-  #       puts "NOT NIL"
-  #     end
-  #   end
-  # end
-
   def self.all
     @@all_parks
   end

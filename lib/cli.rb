@@ -2,6 +2,7 @@ class FindaPark::CLI
 
   def call
     puts
+    puts "FIND YOUR PERFECT PARK".bold.colorize(:green)
     puts
     puts "Welcome, Adventurers!".bold
     puts "---------------------".colorize(:green)
@@ -52,7 +53,8 @@ class FindaPark::CLI
       puts p.name.bold
       puts p.location
       puts p.designation == "" ? "---" : "Designation: #{p.designation}"
-      puts p.blurb == "" ? nil : wrap("#{p.blurb}")
+      puts p.blurb == "" ? nil : wrap("#{p.blurb}".slice(0, 150) + "...", 79)
+      puts "For more info, enter park number.".italic # how to put only the first  so many words + ... ??
     end
     puts
     puts "Please enter the number of the park you'd like to explore.".italic
@@ -80,7 +82,7 @@ class FindaPark::CLI
       if e.message == '404 Not Found'.bold
         puts
         puts "Our apologies - there is no further infomation on the following park:".bold
-        puts
+        puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
         puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
         input_options
       else
@@ -90,7 +92,8 @@ class FindaPark::CLI
     else
       puts
       puts "***".bold
-      puts
+      puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+      puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
       info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
       p.add_hours_seasons(info_hash)
       puts p.name == "" ? (puts "NA") : p.name.bold
@@ -98,12 +101,13 @@ class FindaPark::CLI
       puts p.blurb == "" ? (puts "NA") : wrap("#{p.blurb}")
       puts
       puts "Season Information:".bold
-      p.season_info == "" || "nil" ? (puts "NA") : wrap("#{p.season_info}") # "nil" necessary when the info_url doesn't exist for a park
-      puts
+      puts p.season_info == "" || "nil" ? (puts "NA") : wrap("#{p.season_info}") # "nil" necessary when the info_url doesn't exist for a park
       puts "Hours:".bold
-      p.hours == "" || "nil" ? (puts "NA"): p.hours # "nil" necessary when the info_url doesn't exist for a park
-      p.street_address == "" ? (puts "NA") : p.street_address
+      puts p.hours  == "" || "nil" ? (puts "NA"): p.hours # "nil" necessary when the info_url doesn't exist for a park
+      puts "Mailing Address:".bold
+      puts p.street_address == "" ? (puts "NA") : p.street_address
       puts p.phone == "" ? (puts "NA") : p.phone
+      puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
       puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
       input_options
     end
@@ -145,6 +149,8 @@ end
 # object.instance_variable_get("@b")   #=> 99
 
 #object.instance_variables #=> @name etc.
+
+# Florida/10 crazy location formatting
 
 
 # check 10/32/34 #### How to get rid of empty string/nil vertical space

@@ -25,7 +25,7 @@ class FindaPark::Scraper
       state_park_hash[:state] = doc.css("h1.page-title").text
       state_park_hash[:designation] = p.css("h2").text
       state_park_hash[:name] = p.css("a").text
-      state_park_hash[:location] = p.css("h4").text
+      state_park_hash[:location] = p.css("h4").text.squeeze
       state_park_hash[:blurb] = p.css("p").text
       state_park_hash[:park_url] = "https://www.nps.gov#{p.css("a").attribute("href")}index.htm"
       @parks_array << state_park_hash
@@ -39,8 +39,7 @@ class FindaPark::Scraper
     doc = Nokogiri::HTML(open(park_url))
     park_hash[:catch_phrase] = doc.css("h1.page-title").text
     park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
-    # park_hash[:contact] = doc.css("div.vcard").text.gsub("\n", ' ').strip
-    park_hash[:street_address] = doc.css("div.mailing-address").text.squeeze("\n")
+    park_hash[:street_address] = doc.css("div.mailing-address").text.gsub("Mailing Address:", "").squeeze("\n")
     park_hash[:phone] = doc.css("div#ParkFooter span.tel").text
     park_hash
   end
@@ -53,6 +52,8 @@ class FindaPark::Scraper
     info_hash
   end
 end
+
+# remove h4.org from street address
 
 
 #####
