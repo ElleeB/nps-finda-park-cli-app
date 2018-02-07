@@ -2,9 +2,12 @@ class FindaPark::CLI
 
   def call
     puts
+    puts
     puts "Welcome, Adventurers!".bold
-    puts "---------------------".colorize(:gray).bold
+    puts "---------------------".colorize(:green)
     puts "Find your next escape in any one of the 56 states and territories listed below. Enjoy!".bold
+    puts
+    puts "Please enter the number of the state you'd like to explore.".italic
     puts
     run
   end
@@ -30,7 +33,7 @@ class FindaPark::CLI
       puts "* #{s.name} * #{i}"
     end
     puts
-    puts "Please enter the number of the state you'd like to explore.".bold
+    puts "Please enter the number of the state you'd like to explore.".italic
   end
 
   def make_parks_of_state
@@ -48,11 +51,11 @@ class FindaPark::CLI
       puts "#{i}"
       puts p.name.bold
       puts p.location
-      puts p.designation == "" ? (puts "NA") : p.designation
-      puts p.blurb == "" ? (puts "NA") : wrap("#{p.blurb}")
+      puts p.designation == "" ? "---" : "Designation: #{p.designation}"
+      puts p.blurb == "" ? nil : wrap("#{p.blurb}")
     end
     puts
-    puts "Please enter the number of the park you'd like to explore.".bold
+    puts "Please enter the number of the park you'd like to explore.".italic
     puts
   end
 
@@ -63,14 +66,6 @@ class FindaPark::CLI
       p.add_attributes(attributes_hash)
     end
   end
-
-  # def add_hours_seasons_to_parks
-  #   FindaPark::Park.all.each do |p|
-  #     info_url = p.info_url
-  #     info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url)
-  #     p.add_hours_seasons(info_hash)
-  #   end
-  # end
 
   def display_park_details
     input = gets.chomp
@@ -86,7 +81,7 @@ class FindaPark::CLI
         puts
         puts "Our apologies - there is no further infomation on the following park:".bold
         puts
-        puts "----------------------------------------------------------------------------------------------------------".colorize(:gray).bold
+        puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
         input_options
       else
         nil
@@ -99,7 +94,7 @@ class FindaPark::CLI
       info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
       p.add_hours_seasons(info_hash)
       puts p.name == "" ? (puts "NA") : p.name.bold
-      puts p.catch_phrase == "" ? (puts "NA") : p.catch_phrase
+      puts p.catch_phrase == "" ? nil : p.catch_phrase.italic
       puts p.blurb == "" ? (puts "NA") : wrap("#{p.blurb}")
       puts
       puts "Season Information:".bold
@@ -109,13 +104,13 @@ class FindaPark::CLI
       p.hours == "" || "nil" ? (puts "NA"): p.hours # "nil" necessary when the info_url doesn't exist for a park
       p.street_address == "" ? (puts "NA") : p.street_address
       puts p.phone == "" ? (puts "NA") : p.phone
-      puts "----------------------------------------------------------------------------------------------------------".colorize(:gray).bold
+      puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
       input_options
     end
   end
 
   def input_options
-    puts "Please enter 'parks' to return to the parks menu, 'states' to return to the states menu, or 'exit' to quit".bold
+    puts "Please enter 'parks' to return to the parks menu, 'states' to return to the states menu, or 'exit' to quit".italic
     puts
     input = gets.chomp.downcase
 
@@ -129,10 +124,6 @@ class FindaPark::CLI
     end
   end
 
-  def bold
-    "\e[1m#{self}\e[22m"
-  end
-
   def wrap(s, width=106)
 	  s.gsub(/(.{1,#{width}})(\s+|\Z)/, "\\1\n")
 	end
@@ -143,7 +134,8 @@ class FindaPark::CLI
 end
 
 
-### $$$$$ hours 55/2 not putting "NA"
+
+### Notes
 
 ## !!!!! Turn the '== "" ? (puts "NA") || "nil" : p.hours # "nil" necessary when the info_url doesn't exist for a park' into its own method, using .instance_variables?
 
@@ -154,6 +146,5 @@ end
 
 #object.instance_variables #=> @name etc.
 
-# connecticut park 5 no hours
 
-# virgin islands park 2 no hours or season info
+# check 10/32/34 #### How to get rid of empty string/nil vertical space
