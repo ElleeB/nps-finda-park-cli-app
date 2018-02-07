@@ -2,9 +2,9 @@ class FindaPark::CLI
 
   def call
     puts
-    puts "Welcome, Adventurers!"
-    puts "---------------------"
-    puts "Find your next escape in any one of the 56 states and territories listed below. Enjoy!"
+    puts "Welcome, Adventurers!".bold
+    puts "---------------------".colorize(:gray).bold
+    puts "Find your next escape in any one of the 56 states and territories listed below. Enjoy!".bold
     puts
     run
   end
@@ -30,7 +30,7 @@ class FindaPark::CLI
       puts "* #{s.name} * #{i}"
     end
     puts
-    puts "Please enter the number of the state you'd like to explore."
+    puts "Please enter the number of the state you'd like to explore.".bold
   end
 
   def make_parks_of_state
@@ -43,16 +43,16 @@ class FindaPark::CLI
 
   def list_parks_of_state
     FindaPark::Park.all.each.with_index(1) do |p, i|
-      puts "***"
+      puts "***".bold
       puts
       puts "#{i}"
-      puts p.name
+      puts p.name.bold
       puts p.location
       puts p.designation == "" ? (puts "NA") : p.designation
-      puts p.blurb == "" ? (puts "NA") : p.blurb
+      puts p.blurb == "" ? (puts "NA") : wrap("#{p.blurb}")
     end
     puts
-    puts "Please enter the number of the park you'd like to explore."
+    puts "Please enter the number of the park you'd like to explore.".bold
     puts
   end
 
@@ -82,11 +82,11 @@ class FindaPark::CLI
 
     rescue OpenURI::HTTPError => e
 
-      if e.message == '404 Not Found'
+      if e.message == '404 Not Found'.bold
         puts
-        puts "Our apologies - there is no further infomation on the following park:"
+        puts "Our apologies - there is no further infomation on the following park:".bold
         puts
-        puts "----------------------------------------------------------------------------------------------------------"
+        puts "----------------------------------------------------------------------------------------------------------".colorize(:gray).bold
         input_options
       else
         nil
@@ -94,28 +94,28 @@ class FindaPark::CLI
 
     else
       puts
-      puts "***"
+      puts "***".bold
       puts
       info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
       p.add_hours_seasons(info_hash)
-      puts p.name == "" ? (puts "NA") : p.name
+      puts p.name == "" ? (puts "NA") : p.name.bold
       puts p.catch_phrase == "" ? (puts "NA") : p.catch_phrase
-      puts p.blurb == "" ? (puts "NA") : p.blurb
+      puts p.blurb == "" ? (puts "NA") : wrap("#{p.blurb}")
       puts
-      puts "Season Information:"
-      p.season_info == "" || "nil" ? (puts "NA") : p.season_info # "nil" necessary when the info_url doesn't exist for a park
+      puts "Season Information:".bold
+      p.season_info == "" || "nil" ? (puts "NA") : wrap("#{p.season_info}") # "nil" necessary when the info_url doesn't exist for a park
       puts
-      puts "Hours:"
-      p.hours == "" ? (puts "NA") || "nil" : p.hours # "nil" necessary when the info_url doesn't exist for a park
+      puts "Hours:".bold
+      p.hours == "" || "nil" ? (puts "NA"): p.hours # "nil" necessary when the info_url doesn't exist for a park
       p.street_address == "" ? (puts "NA") : p.street_address
       puts p.phone == "" ? (puts "NA") : p.phone
-      puts "----------------------------------------------------------------------------------------------------------"
+      puts "----------------------------------------------------------------------------------------------------------".colorize(:gray).bold
       input_options
     end
   end
 
   def input_options
-    puts "Please enter 'parks' to return to the parks menu, 'states' to return to the states menu, or 'exit' to quit"
+    puts "Please enter 'parks' to return to the parks menu, 'states' to return to the states menu, or 'exit' to quit".bold
     puts
     input = gets.chomp.downcase
 
@@ -129,10 +129,21 @@ class FindaPark::CLI
     end
   end
 
+  def bold
+    "\e[1m#{self}\e[22m"
+  end
+
+  def wrap(s, width=106)
+	  s.gsub(/(.{1,#{width}})(\s+|\Z)/, "\\1\n")
+	end
+
   def goodbye
-    puts "Thanks for visiting. Cheers to your next adventure!"
+    puts "Thanks for visiting. Cheers to your next adventure!".bold
   end
 end
+
+
+### $$$$$ hours 55/2 not putting "NA"
 
 ## !!!!! Turn the '== "" ? (puts "NA") || "nil" : p.hours # "nil" necessary when the info_url doesn't exist for a park' into its own method, using .instance_variables?
 
