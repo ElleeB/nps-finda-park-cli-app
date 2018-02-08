@@ -4,7 +4,7 @@ class FindaPark::CLI
     puts
     puts "----------------------------------------------------------------------------------------------------------"
     puts
-    puts "FIND YOUR PERFECT PARK".bold.colorize(:green)
+    puts "FIND YOUR PERFECT NATIONAL PARK".bold.colorize(:green)
     puts
     puts "Welcome, Adventurers!".bold
     puts "---------------------".colorize(:green)
@@ -20,7 +20,7 @@ class FindaPark::CLI
     list_states
     make_parks_of_state
     list_parks_of_state
-    add_attributes_to_parks # how can I improve the processing from here down?
+    add_attributes_to_parks # how can I improve the processing from here down? AND split this into 2?
     display_park_details
   end
 
@@ -71,7 +71,7 @@ class FindaPark::CLI
     end
   end
 
-  def display_park_details
+  def display_park_details # need two methods here: check_link_for_error & display_park_details
     input = gets.chomp
     p = FindaPark::Park.all[input.to_i - 1]
 
@@ -90,7 +90,7 @@ class FindaPark::CLI
       else
         nil
       end
-
+################################
     else
       puts
       puts "***".bold
@@ -125,7 +125,7 @@ class FindaPark::CLI
     if input == "parks"
       list_parks_of_state
       display_park_details
-    elsif input == "states"
+    elsif input == "states" # how to stop this from indexing from previous run ex. west Virginia * 110
       run
     elsif input == "exit"
       goodbye
@@ -140,3 +140,7 @@ class FindaPark::CLI
     puts "Thanks for visiting. Cheers to your next adventure!".bold
   end
 end
+
+
+# need to create a valid_input check so that it doesn't just kick user out - also, need an escape from the
+# "please enter the number of the park you'd like to see"...

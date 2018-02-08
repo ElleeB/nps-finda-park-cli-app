@@ -47,5 +47,4 @@ class FindaPark::Park
   def save
     @@all_parks << self
   end
-
 end

@@ -52,19 +52,3 @@ class FindaPark::Scraper
     info_hash
   end
 end
-
-# remove h4.org from street address
-
-
-#####
-
-
-    # Opting for NA format in cli.rb
-    # info_hash.each do |key, value|
-    #   if value == nil
-    #     info_hash.delete(key)
-    #   end
-    # end
-
-# :street_address p.adr span.street-address.text or div.mailing-address
-# :phone  div.mailing-address span.tel.text
