@@ -5,18 +5,9 @@ class FindaPark::Park
   @@all_parks = []
 
   def initialize(park_hash)
-    @name = park_hash[:name]
-    @state = park_hash[:state]
-    @designation = park_hash[:designation]
-    @location = park_hash[:location]
-    @park_url = park_hash[:park_url]
-    @blurb = park_hash[:blurb]
-    @info_url = nil
-    @catch_phrase = nil
-    @season_info = nil
-    @hours = nil
-    @street_address = nil
-    @phone = nil
+    park_hash.each do |key, value|
+      self.send("#{key}=", value)
+    end
     self.save
   end
 
@@ -35,12 +26,14 @@ class FindaPark::Park
     end
   end
 
+  # add catch_phrase, street_address, phone, info_url
   def add_attributes(attributes_hash)
     attributes_hash.each do |key, value|
       self.send("#{key}=", value)
     end
   end
 
+  # use info_url to add season and hours info
   def add_hours_seasons(info_hash)
     info_hash.each do |key, value|
       self.send("#{key}=", value)

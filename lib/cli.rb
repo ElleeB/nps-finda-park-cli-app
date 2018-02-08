@@ -2,6 +2,8 @@ class FindaPark::CLI
 
   def call
     puts
+    puts "----------------------------------------------------------------------------------------------------------"
+    puts
     puts "FIND YOUR PERFECT PARK".bold.colorize(:green)
     puts
     puts "Welcome, Adventurers!".bold
@@ -53,7 +55,7 @@ class FindaPark::CLI
       puts p.name.bold
       puts p.location
       puts p.designation == "" ? "---" : "Designation: #{p.designation}"
-      puts p.blurb == "" ? nil : wrap("#{p.blurb}".slice(0, 150) + "...", 79)
+      puts p.blurb == "" ? "nil" : wrap("#{p.blurb}".slice(0, 150) + "...", 79)
       puts "For more info, enter park number.".italic # how to put only the first  so many words + ... ??
     end
     puts
@@ -97,13 +99,15 @@ class FindaPark::CLI
       info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
       p.add_hours_seasons(info_hash)
       puts p.name == "" ? (puts "NA") : p.name.bold
-      puts p.catch_phrase == "" ? nil : p.catch_phrase.italic
+      puts p.catch_phrase == "" ? "nil" : p.catch_phrase.italic
       puts p.blurb == "" ? (puts "NA") : wrap("#{p.blurb}")
       puts
       puts "Season Information:".bold
-      puts p.season_info == "" || "nil" ? (puts "NA") : wrap("#{p.season_info}") # "nil" necessary when the info_url doesn't exist for a park
+      puts p.season_info == "" || nil ? (puts "NA") : wrap("#{p.season_info}") # "nil" necessary when the info_url doesn't exist for a park
+      puts
       puts "Hours:".bold
-      puts p.hours  == "" || "nil" ? (puts "NA"): p.hours # "nil" necessary when the info_url doesn't exist for a park
+      puts p.hours  == "" || nil ? (puts "NA"): p.hours # "nil" necessary when the info_url doesn't exist for a park
+      puts
       puts "Mailing Address:".bold
       puts p.street_address == "" ? (puts "NA") : p.street_address
       puts p.phone == "" ? (puts "NA") : p.phone
@@ -136,21 +140,3 @@ class FindaPark::CLI
     puts "Thanks for visiting. Cheers to your next adventure!".bold
   end
 end
-
-
-
-### Notes
-
-## !!!!! Turn the '== "" ? (puts "NA") || "nil" : p.hours # "nil" necessary when the info_url doesn't exist for a park' into its own method, using .instance_variables?
-
-# what to do when no info link (link == nil I think)? ex. # info_url error american samoa park 1 BECAUSE THERE IS NONE
-# what to do when one of the instance variables is nil (because the giant space is terrible) puts ""
-# object.instance_variable_get(:@a)    #=> "cat"
-# object.instance_variable_get("@b")   #=> 99
-
-#object.instance_variables #=> @name etc.
-
-# Florida/10 crazy location formatting
-
-
-# check 10/32/34 #### How to get rid of empty string/nil vertical space

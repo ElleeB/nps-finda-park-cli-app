@@ -96,3 +96,49 @@ rescue OpenURI::HTTPError => e
   #     end
   #   end
   # end
+
+
+
+    # def detect_empty_string_or_nil
+    #   p.instance_variables.each do |v|
+    #     if v == "" || v == nil
+    #       puts "NA"
+    #     else
+    #       puts wrap("#{p.v}")
+    #     end
+    #   end
+    # end
+
+
+  # if p.attribute == "" --> puts "NA"
+
+  # if p.attribute == "" --> puts nil
+
+  # if p.attribute == "" || nil --> puts "NA"
+
+
+
+  # puts p.name == "" ? (puts "NA") : p.name.bold - empty string? "NA"
+
+  # puts p.catch_phrase == "" ? nil : p.catch_phrase.italic - empty string?  nil
+
+  # == "" || nil ? (puts "NA"): p.hours - empty string or "nil"? "NA"
+
+
+
+
+  ### Notes
+
+  ## !!!!! Turn the '== "" ? (puts "NA") || "nil" : p.hours # "nil" necessary when the info_url doesn't exist for a park' into its own method, using .instance_variables?
+
+  # what to do when no info link (link == nil I think)? ex. # info_url error american samoa park 1 BECAUSE THERE IS NONE
+  # what to do when one of the instance variables is nil (because the giant space is terrible) puts ""
+  # object.instance_variable_get(:@a)    #=> "cat"
+  # object.instance_variable_get("@b")   #=> 99
+
+  #object.instance_variables #=> @name etc.
+
+  # Florida/10 crazy location formatting
+
+
+  # check 10/32/34 #### How to get rid of empty string/nil vertical space
