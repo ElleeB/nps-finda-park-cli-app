@@ -20,14 +20,18 @@ class FindaPark::CLI
     list_states
     make_parks_of_state
     list_parks_of_state
-    add_attributes_to_parks # how can I improve the processing from here down? AND split this into 2?
-    display_park_details
+    add_attributes_to_parks
+    check_url_and_display_details
   end
 
   def make_states
-    index_url = "https://www.nps.gov/findapark/index.htm"
-    states_array = FindaPark::Scraper.index_scraper(index_url)
-    FindaPark::State.create_from_collection(states_array)
+    if FindaPark::State.all == []
+      index_url = "https://www.nps.gov/findapark/index.htm"
+      states_array = FindaPark::Scraper.index_scraper(index_url)
+      FindaPark::State.create_from_collection(states_array)
+    else
+      nil
+    end
   end
 
   def list_states
@@ -71,12 +75,20 @@ class FindaPark::CLI
     end
   end
 
-  def display_park_details # need two methods here: check_link_for_error & display_park_details
+  def add_hours_seasons_to_park
+    FindaPark::Park.all.each do |p|
+      info_url = p.info_url
+      info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url)
+      p.add_hours_seasons(info_hash)
+    end
+  end
+
+  def check_url_and_display_details 
     input = gets.chomp
-    p = FindaPark::Park.all[input.to_i - 1]
+    park = FindaPark::Park.all[input.to_i - 1]
 
     begin
-      info_url = p.info_url
+      info_url = park.info_url
       open(info_url)
 
     rescue OpenURI::HTTPError => e
@@ -90,31 +102,37 @@ class FindaPark::CLI
       else
         nil
       end
-################################
+
     else
-      puts
-      puts "***".bold
-      puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
-      puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
-      info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
-      p.add_hours_seasons(info_hash)
-      puts p.name == "" ? (puts "NA") : p.name.bold
-      puts p.catch_phrase == "" ? "nil" : p.catch_phrase.italic
-      puts p.blurb == "" ? (puts "NA") : wrap("#{p.blurb}")
-      puts
-      puts "Season Information:".bold
-      puts p.season_info == "" || nil ? (puts "NA") : wrap("#{p.season_info}") # "nil" necessary when the info_url doesn't exist for a park
-      puts
-      puts "Hours:".bold
-      puts p.hours  == "" || nil ? (puts "NA"): p.hours # "nil" necessary when the info_url doesn't exist for a park
-      puts
-      puts "Mailing Address:".bold
-      puts p.street_address == "" ? (puts "NA") : p.street_address
-      puts p.phone == "" ? (puts "NA") : p.phone
-      puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
-      puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
-      input_options
+      add_hours_seasons_to_park
+      display_park_details(park)
     end
+  end
+
+  def display_park_details(park)
+    p = park
+    info_url = p.info_url
+    info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
+    puts
+    puts "***".bold
+    puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+    puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+    puts p.name == "" ? (puts "NA") : p.name.bold
+    puts p.catch_phrase == "" ? "nil" : p.catch_phrase.italic
+    puts p.blurb == "" ? (puts "NA") : wrap("#{p.blurb}")
+    puts
+    puts "Season Information:".bold
+    puts p.season_info == "" || nil ? (puts "NA") : wrap("#{p.season_info}") # "nil" necessary when the info_url doesn't exist for a park
+    puts
+    puts "Hours:".bold
+    puts p.hours  == "" || nil ? (puts "NA"): p.hours # "nil" necessary when the info_url doesn't exist for a park
+    puts
+    puts "Mailing Address:".bold
+    puts p.street_address == "" ? (puts "NA") : p.street_address
+    puts p.phone == "" ? (puts "NA") : p.phone
+    puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+    puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+    input_options
   end
 
   def input_options
