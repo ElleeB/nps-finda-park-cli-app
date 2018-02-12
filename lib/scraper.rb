@@ -1,8 +1,6 @@
 class FindaPark::Scraper
 
-  source = Net::HTTP.get('stackoverflow.com', '/findapark/index.htm')
-
-  https://www.nps.gov/findapark/index.htm
+  # @@source = Net::HTTP.get('stackoverflow.com', '/findapark/index.htm')
 
   # returns an array of all state
   def self.index_scraper(index_url)
