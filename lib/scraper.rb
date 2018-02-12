@@ -1,5 +1,9 @@
 class FindaPark::Scraper
 
+  source = Net::HTTP.get('stackoverflow.com', '/findapark/index.htm')
+
+  https://www.nps.gov/findapark/index.htm
+
   # returns an array of all state
   def self.index_scraper(index_url)
     @states_array = []
@@ -44,6 +48,7 @@ class FindaPark::Scraper
     park_hash
   end
 
+  # Available once the info_url is generated via park_page_scraper
   def self.hours_seasons_scraper(info_url)
     info_hash = {:season_info => nil, :hours => nil}
     doc = Nokogiri:: HTML(open(info_url))

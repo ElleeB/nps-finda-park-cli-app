@@ -11,7 +11,7 @@ class FindaPark::Park
     self.save
   end
 
-  # use collection of parks to instantiate instances of parks # assign state, designation, name, location, blurb, url
+  # use collection of parks to instantiate parks, give parks a state, give states parks, and assign state, designation, name, location, blurb, url
   def self.create_from_collection(parks_array)
     parks_array.each do |park_hash|
       park = self.new(park_hash)

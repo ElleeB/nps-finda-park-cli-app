@@ -1,0 +1,52 @@
+def display_park_details # need two methods here: check_link_for_error & display_park_details
+  input = gets.chomp
+  p = FindaPark::Park.all[input.to_i - 1]
+
+  begin
+    info_url = p.info_url
+    open(info_url)
+
+  rescue OpenURI::HTTPError => e
+
+    if e.message == '404 Not Found'.bold
+      puts
+      puts "Our apologies - there is no further infomation on the following park:".bold
+      puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+      puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+      input_options
+    else
+      nil
+    end
+################################
+  else
+    puts
+    puts "***".bold
+    puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+    puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+    info_hash = FindaPark::Scraper.hours_seasons_scraper(info_url) # try to reconfigure into it's own method
+    p.add_hours_seasons(info_hash)
+    puts p.name == "" ? (puts "NA") : p.name.bold
+    puts p.catch_phrase == "" ? "nil" : p.catch_phrase.italic
+    puts p.blurb == "" ? (puts "NA") : wrap("#{p.blurb}")
+    puts
+    puts "Season Information:".bold
+    puts p.season_info == "" || nil ? (puts "NA") : wrap("#{p.season_info}") # "nil" necessary when the info_url doesn't exist for a park
+    puts
+    puts "Hours:".bold
+    puts p.hours  == "" || nil ? (puts "NA"): p.hours # "nil" necessary when the info_url doesn't exist for a park
+    puts
+    puts "Mailing Address:".bold
+    puts p.street_address == "" ? (puts "NA") : p.street_address
+    puts p.phone == "" ? (puts "NA") : p.phone
+    puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+    puts "----------------------------------------------------------------------------------------------------------".colorize(:green)
+    input_options
+  end
+end
+
+#####################################
+
+# another input_options for parks menu
+# need to create a valid_input check so that it doesn't just kick user out - also, need an escape from the "please enter the number of the park you'd like to see" and "which state?"...
+# improve code line 63
+# why code line 95 works intermittently?
