@@ -5,9 +5,9 @@ require_relative './park.rb'
 require_relative './state.rb'
 require_relative './scraper.rb'
 
+
 require 'nokogiri'
 require 'open-uri'
 require 'colorize'
-# require 'net/http'
 
 # require 'pry'
