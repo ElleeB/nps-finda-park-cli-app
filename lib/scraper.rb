@@ -35,17 +35,7 @@ class FindaPark::Scraper
 
   # This won't happen until after the states and parks are made
   def self.park_page_scraper(park_url)
-    driver = Selenium::WebDriver.for :chrome
-    driver.navigate.to(park_url)
-      if driver.find_element(:class, "AnniversaryBanner") != nil
-        driver.find_element(:id, "cboxClose").click
-      else
-        nil
-      end
-
-    source = driver.page_source
-
-    doc = Nokogiri::HTML(source)
+    doc = Nokogiri::HTML(open(park_url))
     park_hash = {:catch_phrase => nil, :street_address => nil, :phone => nil, :info_url => nil}
     park_hash[:catch_phrase] = doc.css("h1.page-title").text
     park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
@@ -54,6 +44,16 @@ class FindaPark::Scraper
     park_hash
   end
 
+
+  # driver = Selenium::WebDriver.for :chrome
+  # source = driver.page_source
+
+  # driver.navigate.to(park_url)
+  #   if driver.find_element(:class, "AnniversaryBanner") != nil
+  #     driver.find_element(:id, "cboxClose").click
+  #   else
+  #     nil
+  #   end
   # doc = Nokogiri::HTML(open(park_url))
   # park_hash[:catch_phrase] = driver.find_element(:class, "page-title park-title").text
   # park_hash[:info_url] = "https://www.nps.gov#{driver.find_element(:class, "Utility-nav").attribute("href").content}"
