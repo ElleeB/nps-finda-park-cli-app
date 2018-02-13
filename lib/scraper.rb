@@ -35,14 +35,33 @@ class FindaPark::Scraper
 
   # This won't happen until after the states and parks are made
   def self.park_page_scraper(park_url)
+    driver = Selenium::WebDriver.for :chrome
+    driver.navigate.to(park_url)
+      if driver.find_element(:class, "AnniversaryBanner") != nil
+        driver.find_element(:id, "cboxClose").click
+      else
+        nil
+      end
+
+    source = driver.page_source
+
+    doc = Nokogiri::HTML(source)
     park_hash = {:catch_phrase => nil, :street_address => nil, :phone => nil, :info_url => nil}
-    doc = Nokogiri::HTML(open(park_url))
     park_hash[:catch_phrase] = doc.css("h1.page-title").text
     park_hash[:info_url] = "https://www.nps.gov#{doc.css("div.Utility-nav li a")[0].attribute("href").content}"
     park_hash[:street_address] = doc.css("div.mailing-address").text.gsub("Mailing Address:", "").squeeze("\n")
     park_hash[:phone] = doc.css("div#ParkFooter span.tel").text
     park_hash
   end
+
+  # doc = Nokogiri::HTML(open(park_url))
+  # park_hash[:catch_phrase] = driver.find_element(:class, "page-title park-title").text
+  # park_hash[:info_url] = "https://www.nps.gov#{driver.find_element(:class, "Utility-nav").attribute("href").content}"
+  # park_hash[:street_address] = driver.find_element(:class, "streetAddress").text
+  # park_hash[:phone] = driver.find_element(:class, "tel").text
+
+  # <div class="AnniversaryBanner" id="anniversary_banner" data-sitecode="laro" data-sitetype="park"></div>
+  # <button type="button" id="cboxClose">close</button>
 
   # Available once the info_url is generated via park_page_scraper
   def self.hours_seasons_scraper(info_url)
