@@ -1,6 +1,6 @@
 # Finda Park
 
-Finda Park is a program that allows users to research national parks in the United States. Through a straightforward CLI, users can obtain a list of national parks by state, and find essential park and contact information via individual park reports.
+Finda Park is an application that allows users to research national parks in the United States. Through a straightforward CLI, users can obtain a list of national parks by state, and find essential park and contact information via individual park reports.
 
 ## Installation
 
