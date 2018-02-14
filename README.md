@@ -1,24 +1,19 @@
+Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
+
+
 # FindaPark
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/finda_park`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Finda Park is a program that allows a user to research national parks in the United States. Through a straightforward CLI, users can obtain a list of national parks by state, and find essential park and contact information via individual park reports.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Navigate to the main page of the repository:
 
-```ruby
-gem 'finda_park'
-```
+https://github.com/ElleeB/nps-finda-park-cli-app
 
-And then execute:
+Under the repository name, click <Clone or download>.
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install finda_park
+git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
 
 ## Usage
 

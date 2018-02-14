@@ -110,7 +110,7 @@ class FindaPark::CLI
         puts park.name
         puts
         puts "-------------------------------".colorize(:green)
-        input_options(park) # runs if there's been an error
+        input_options # runs if there's been an error
       else
         nil
       end
@@ -140,17 +140,17 @@ class FindaPark::CLI
     puts p.hours  == "" || nil ? (puts "NA"): p.hours # info_url may not exist for a park
     puts
     puts "Mailing Address:".bold
-    puts p.street_address == "" ? (puts "NA") : p.street_address
+    puts p.street_address == "" ? (puts "NA") : wrap("#{p.street_address}")
     puts p.phone == "" ? (puts "NA") : p.phone
     puts "-------------------------------".colorize(:green)
     puts "-------------------------------".colorize(:green)
     puts
     puts "Enter 'parks' for the parks menu, 'states' for the states menu, or 'exit' to quit".italic
     puts
-    input_options(p)
+    input_options
   end
 
-  def input_options(park)
+  def input_options
     input = gets.chomp.downcase
     if input == "parks"
       list_parks_of_state
