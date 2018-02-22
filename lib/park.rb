@@ -9,6 +9,7 @@ class FindaPark::Park
       self.send("#{key}=", value)
     end
     self.save
+    self
   end
 
   # use collection of parks to instantiate parks, give parks a state, give states parks, and assign state, designation, name, location, blurb, url

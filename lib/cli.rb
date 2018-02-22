@@ -43,15 +43,19 @@ class FindaPark::CLI
     end
     puts
     puts "-------------------------------".colorize(:green)
-    puts "Please enter the number of the state you'd like to explore.".italic
+    puts "Please enter the number of the state you'd like to explore, or 'exit' to quit.".italic
   end
 
   # Creates parks based on the previous input
   def make_parks_of_state
     input = gets.chomp
-    state_url = FindaPark::State.all[input.to_i - 1].url
-    parks_array = FindaPark::Scraper.state_parks_scraper(state_url)
-    FindaPark::Park.create_from_collection(parks_array)
+    if input == "exit"
+      goodbye
+    else
+      state_url = FindaPark::State.all[input.to_i - 1].url
+      parks_array = FindaPark::Scraper.state_parks_scraper(state_url)
+      FindaPark::Park.create_from_collection(parks_array)
+    end
   end
 
   # Lists all parks of the chosen state + asks for input
@@ -68,7 +72,7 @@ class FindaPark::CLI
     end
     puts
     puts "-------------------------------".colorize(:green)
-    puts "Please enter the number of the park you'd like to explore.".italic
+    puts "Please enter the number of the park you'd like to explore or 'states' for the states menu, or 'exit' to quit.".italic
     puts
   end
 
@@ -93,25 +97,32 @@ class FindaPark::CLI
   # Checks if chosen park's 'info_url' is OK (if not, asks for input), if OK, display_park_details, then asks for input through display_park_details
   def check_url_and_display_details
     input = gets.chomp
-    park = FindaPark::Park.all[input.to_i - 1]
-    begin
-      info_url = park.info_url
-      open(info_url)
-    rescue OpenURI::HTTPError => e
-
-      if e.message == '404 Not Found'
-        puts
-        puts "Our apologies - there is no further information on the following park:".bold
-        puts park.name
-        puts
-        puts "-------------------------------".colorize(:green)
-        input_options # runs if there's been an error
-      else
-        nil
-      end
-
+    if input == "states"
+      run
+    elsif input == "exit"
+      goodbye
     else
-      display_park_details(park) # runs if there is no url error (meaning info_url is OK)
+
+      park = FindaPark::Park.all[input.to_i - 1]
+      begin
+        info_url = park.info_url
+        open(info_url)
+      rescue OpenURI::HTTPError => e
+
+        if e.message == '404 Not Found'
+          puts
+          puts "Our apologies - there is no further information on the following park:".bold
+          puts park.name
+          puts
+          puts "-------------------------------".colorize(:green)
+          input_options # runs if there's been an error
+        else
+          nil
+        end
+
+      else
+        display_park_details(park) # runs if there is no url error (meaning info_url is OK)
+      end
     end
   end
 
@@ -165,5 +176,6 @@ class FindaPark::CLI
     puts
     puts "Thanks for visiting. Cheers to your next adventure!".bold.colorize(:green)
     puts
+    exit
   end
 end
