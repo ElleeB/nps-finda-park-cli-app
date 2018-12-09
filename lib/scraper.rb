@@ -15,6 +15,10 @@ class FindaPark::Scraper
     @states_array
   end
 
+  def self.test
+    @states_array
+  end
+
   # returns and array of state's parks
   def self.state_parks_scraper(state_url)
     @parks_array = []

@@ -14,6 +14,11 @@ Under the repository name, click 'Clone or download'
 git clone https://github.com/ElleeB/nps-finda-park-cli-app
 ```
 
+In your terminal, navigate to the nps directory and type
+```
+open bin/finda_park
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub [here](https://github.com/ElleeB/nps-finda-park-cli-app).
